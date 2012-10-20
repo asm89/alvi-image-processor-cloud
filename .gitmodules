@@ -1,0 +1,3 @@
+[submodule "vagrant/puppet/modules/php"]
+	path = vagrant/puppet/modules/php
+	url = https://github.com/saz/puppet-php.git

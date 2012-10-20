@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+
+  # Operating System
+
+  ## Ubuntu 12.04 LTS (32-bit)
+  # config.vm.box = "precise32"
+  # config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+  ## Ubuntu 12.04 LTS (64-bit)
+  config.vm.box = "precise64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+
+  # Boot with a GUI so you can see the screen. (Default is headless)
+  # config.vm.boot_mode = :gui
+
+  # Assign this VM to a host-only network IP, allowing you to access it
+  # via the IP. Host-only networks can talk to the host machine as well as
+  # any other machines on the same network, but cannot be accessed (through this
+  # network interface) by any external networks.
+  config.vm.network :hostonly, "192.168.56.23"
+  config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+
+  # set memory to 2GB
+  config.vm.customize ["modifyvm", :id, "--memory", 2048]
+
+  # more ssh tries
+  config.ssh.max_tries = 10
+
+  # Set the default project share
+  config.vm.share_folder "data", "/data", "../"
+
+  # Forward a port from the guest to the host, which allows for outside
+  # computers to access the VM, whereas host only networking does not.
+  #config.vm.forward_port 80, 10080
+  #config.vm.forward_port 22, 10022
+  #config.vm.forward_port 8080, 18080
+  #
+end

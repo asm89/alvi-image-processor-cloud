@@ -31,9 +31,15 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $container = $this->getContainer();
+
         $msg = array('user_id' => 1235, 'image_path' => '/path/to/new/pic.png');
-        $this->getContainer()->get('old_sound_rabbit_mq.upload_picture_producer')->publish(serialize($msg));
+        $container->get('old_sound_rabbit_mq.upload_picture_producer')->publish(serialize($msg));
+
         $output->writeln('Scheduled a <info>job</info> for client <comment>foo</comment>.');
 
+        $collector = $container->get('beberlei_metrics.collector.statsd');
+        $collector->increment('alvi.jobs');
+        $collector->flush();
     }
 }

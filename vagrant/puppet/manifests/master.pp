@@ -22,3 +22,8 @@ class { 'rabbitmq::server':
 }
 
 Class['rabbitmq::repo::apt'] -> Class['rabbitmq::server']
+
+class {'statsd':
+    graphite_host => localhost,
+    flush_interval => 1000
+}

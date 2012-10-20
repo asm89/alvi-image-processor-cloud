@@ -13,3 +13,6 @@
 [submodule "vagrant/puppet/modules/graphite"]
 	path = vagrant/puppet/modules/graphite
 	url = https://github.com/dwerder/puppet-graphite.git
+[submodule "vagrant/puppet/modules/statsd"]
+	path = vagrant/puppet/modules/statsd
+	url = https://github.com/choffee/puppet-statsd.git

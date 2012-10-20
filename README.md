@@ -9,12 +9,19 @@ Installation
 Application installation. Using composer:
 
 ```bash
-$ curl https://getcomposer.org/install | php
+$ curl https://getcomposer.org/installer | php
 $ composer.phar install --dev
 ```
 
-Run with:
+Run a message producer/scheduler:
 
 ```bash
-$ app/console
+$ app/console alvi:image-processor:schedule
+```
+
+Run a worker process:
+
+```bash
+$ app/console rabbitmq:consumer upload_picture
+
 ```

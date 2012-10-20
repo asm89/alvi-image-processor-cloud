@@ -4,6 +4,7 @@ app/cache/*
 app/logs/*
 build/
 vendor
-bin
+bin/*
+!bin/graphite-test.sh
 composer.phar
 vagrant/.vagrant

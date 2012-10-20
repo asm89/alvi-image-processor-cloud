@@ -1,5 +1,6 @@
 include php
 include stdlib
+include graphite
 
 class { 'apt':
   always_apt_update => false

@@ -8,3 +8,4 @@ bin/*
 !bin/graphite-test.sh
 composer.phar
 vagrant/.vagrant
+tags

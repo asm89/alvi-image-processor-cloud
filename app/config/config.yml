@@ -33,3 +33,9 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'upload-picture', type: direct}
             queue_options:    {name: 'upload-picture'}
             callback:         alvi.image_processor.worker
+
+beberlei_metrics:
+    default: statsd
+    collectors:
+        statsd:
+            type: statsd

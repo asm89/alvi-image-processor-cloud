@@ -11,6 +11,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new Beberlei\Bundle\MetricsBundle\BeberleiMetricsBundle(),
 
             new Alvi\Bundle\ImageProcessor\SchedulerBundle\AlviImageProcessorSchedulerBundle(),
             new Alvi\Bundle\ImageProcessor\WorkerBundle\AlviImageProcessorWorkerBundle(),

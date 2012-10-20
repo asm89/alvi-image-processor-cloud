@@ -1,6 +1,59 @@
 {
-    "hash": "26db299ca336506f8e3660258ee33bae",
+    "hash": "3a2ec14d2916af5e28ab398deccb1f31",
     "packages": [
+        {
+            "name": "beberlei/metrics",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/metrics.git",
+                "reference": "da4b17bf6009c4281ea69aa121ede99e08ccb132"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/beberlei/metrics/zipball/da4b17bf6009c4281ea69aa121ede99e08ccb132",
+                "reference": "da4b17bf6009c4281ea69aa121ede99e08ccb132",
+                "shasum": ""
+            },
+            "require-dev": {
+                "symfony/http-kernel": "*",
+                "symfony/config": "*",
+                "symfony/dependency-injection": "*",
+                "mockery/mockery": "*",
+                "okitsu/zabbix-sender": "*",
+                "kriswallsmith/buzz": "*"
+            },
+            "suggest": {
+                "okitsu/zabbix-sender": "For zabbix integration",
+                "kriswallsmith/buzz": "For Librato integration"
+            },
+            "time": "1350637533",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Beberlei\\Metrics": "src/",
+                    "Beberlei\\Bundle\\MetricsBundle": "src/"
+                },
+                "files": [
+                    "src/Beberlei/Metrics/functions.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                }
+            ],
+            "description": "Simple library to talk to metrics collector services.",
+            "keywords": [
+                "logging",
+                "Metrics"
+            ]
+        },
         {
             "name": "doctrine/common",
             "version": "2.3.x-dev",
@@ -331,18 +384,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "244eaf53b30632850c2b582fcea57ff1b9ac407f"
+                "reference": "61393dc9fb8982110048624aa573aec4aee0b465"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/zipball/244eaf53b30632850c2b582fcea57ff1b9ac407f",
-                "reference": "244eaf53b30632850c2b582fcea57ff1b9ac407f",
+                "url": "https://github.com/fabpot/Twig/zipball/61393dc9fb8982110048624aa573aec4aee0b465",
+                "reference": "61393dc9fb8982110048624aa573aec4aee0b465",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1350650176",
+            "time": "1350737598",
             "type": "library",
             "extra": {
                 "branch-alias": {

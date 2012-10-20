@@ -12,3 +12,24 @@ framework:
     default_locale:  %locale%
     trust_proxy_headers: false
     session:         ~
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:      'localhost'
+            port:      5673
+            user:      'guest'
+            password:  'guest'
+            vhost:     '/'
+
+    producers:
+        upload_picture:
+            connection: default
+            exchange_options: {name: 'upload-picture', type: direct}
+
+    consumers:
+        upload_picture:
+            connection: default
+            exchange_options: {name: 'upload-picture', type: direct}
+            queue_options:    {name: 'upload-picture'}
+            callback:         alvi.image_processor.worker

@@ -10,7 +10,10 @@ class AppKernel extends Kernel
         $bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
+            new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+
             new Alvi\Bundle\ImageProcessor\SchedulerBundle\AlviImageProcessorSchedulerBundle(),
+            new Alvi\Bundle\ImageProcessor\WorkerBundle\AlviImageProcessorWorkerBundle(),
         );
 
         return $bundles;

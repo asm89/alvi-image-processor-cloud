@@ -1,5 +1,5 @@
 {
-    "hash": "6059ae4d88353918a9edd1c30d682e2e",
+    "hash": "26db299ca336506f8e3660258ee33bae",
     "packages": [
         {
             "name": "doctrine/common",
@@ -56,7 +56,7 @@
                 {
                     "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -76,12 +76,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog",
-                "reference": "09b3a80cfaf3e323e348a5e817afeee98d5e6b48"
+                "reference": "fa292d1a945ac264093e7279032cf55cda9d1019"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Seldaek/monolog/zipball/09b3a80cfaf3e323e348a5e817afeee98d5e6b48",
-                "reference": "09b3a80cfaf3e323e348a5e817afeee98d5e6b48",
+                "url": "https://github.com/Seldaek/monolog/zipball/fa292d1a945ac264093e7279032cf55cda9d1019",
+                "reference": "fa292d1a945ac264093e7279032cf55cda9d1019",
                 "shasum": ""
             },
             "require": {
@@ -95,7 +95,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server"
             },
-            "time": "1347983448",
+            "time": "1350545514",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -124,6 +124,51 @@
             "keywords": [
                 "log",
                 "logging"
+            ]
+        },
+        {
+            "name": "oldsound/rabbitmq-bundle",
+            "version": "dev-master",
+            "target-dir": "OldSound/RabbitMqBundle",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/videlalvaro/RabbitMqBundle.git",
+                "reference": "2e1e063016912c5c41091a46ee0f022652435da5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/videlalvaro/RabbitMqBundle/zipball/2e1e063016912c5c41091a46ee0f022652435da5",
+                "reference": "2e1e063016912c5c41091a46ee0f022652435da5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/framework-bundle": ">=2.0",
+                "videlalvaro/php-amqplib": "dev-master",
+                "symfony/yaml": ">=2.0"
+            },
+            "time": "1350265130",
+            "type": "symfony-bundle",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "OldSound\\RabbitMqBundle\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla"
+                }
+            ],
+            "description": "Integrates php-amqplib with Symfony2 and RabbitMq",
+            "keywords": [
+                "queue",
+                "Symfony2",
+                "rabbitmq",
+                "message"
             ]
         },
         {
@@ -187,12 +232,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "f187beed85887a2f653f98370c0889f807b4ddf1"
+                "reference": "390f36a86be02d0907a36c2da5d7b899c33df468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/zipball/f187beed85887a2f653f98370c0889f807b4ddf1",
-                "reference": "f187beed85887a2f653f98370c0889f807b4ddf1",
+                "url": "https://github.com/symfony/symfony/zipball/390f36a86be02d0907a36c2da5d7b899c33df468",
+                "reference": "390f36a86be02d0907a36c2da5d7b899c33df468",
                 "shasum": ""
             },
             "require": {
@@ -237,14 +282,14 @@
             "require-dev": {
                 "doctrine/data-fixtures": "1.0.*",
                 "propel/propel1": "dev-master",
-                "monolog/monolog": "dev-master",
                 "doctrine/dbal": ">=2.2,<2.4-dev",
-                "doctrine/orm": ">=2.2.3,<2.4-dev"
+                "doctrine/orm": ">=2.2.3,<2.4-dev",
+                "monolog/monolog": "1.*"
             },
             "suggest": {
                 "doctrine/data-fixtures": "1.0.*"
             },
-            "time": "1349554167",
+            "time": "1350645770",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -286,22 +331,22 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "5d7baaf767ec3b8f6599738e7c98bde6c25cf7c1"
+                "reference": "244eaf53b30632850c2b582fcea57ff1b9ac407f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/zipball/5d7baaf767ec3b8f6599738e7c98bde6c25cf7c1",
-                "reference": "5d7baaf767ec3b8f6599738e7c98bde6c25cf7c1",
+                "url": "https://github.com/fabpot/Twig/zipball/244eaf53b30632850c2b582fcea57ff1b9ac407f",
+                "reference": "244eaf53b30632850c2b582fcea57ff1b9ac407f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1349508092",
+            "time": "1350650176",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.10-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "installation-source": "source",
@@ -328,16 +373,52 @@
             "keywords": [
                 "templating"
             ]
+        },
+        {
+            "name": "videlalvaro/php-amqplib",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/videlalvaro/php-amqplib.git",
+                "reference": "8a393d2e1c041b31186196cc67a17a880153ecea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/videlalvaro/php-amqplib/zipball/8a393d2e1c041b31186196cc67a17a880153ecea",
+                "reference": "8a393d2e1c041b31186196cc67a17a880153ecea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "time": "1350048962",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "PhpAmqpLib": ""
+                }
+            },
+            "authors": [
+                {
+                    "name": "Alvaro Videla"
+                }
+            ],
+            "description": "This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/videlalvaro/php-amqplib/",
+            "keywords": [
+                "queue",
+                "rabbitmq",
+                "message"
+            ]
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "oldsound/rabbitmq-bundle": 20
+    }
 }

@@ -22,6 +22,12 @@ class { 'rabbitmq::server':
   delete_guest_user => false
 }
 
+rabbitmq_plugin {'rabbitmq_management':
+  ensure => present,
+  provider => 'rabbitmqplugins',
+  notify => Service["rabbitmq-server"],
+}
+
 Class['rabbitmq::repo::apt'] -> Class['rabbitmq::server']
 
 class {'statsd':

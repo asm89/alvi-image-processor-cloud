@@ -14,5 +14,7 @@
             <argument>%alvi.image_processor.provisioner.vagrant_provisioner.run_dir%</argument>
             <argument>%alvi.image_processor.provisioner.vagrant_provisioner.vagrant_base_file%</argument>
         </service>
+
+        <service id="alvi.image_processor.provisioner.manager" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineManager" />
     </services>
 </container>

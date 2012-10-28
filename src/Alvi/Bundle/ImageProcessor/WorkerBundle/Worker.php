@@ -8,6 +8,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 /**
  * @author Alexander <iam.asm89@gmail.com>
+ * @author Vincent <vincentvanbeek@mac.com>
  */
 class Worker implements ConsumerInterface
 {
@@ -22,10 +23,8 @@ class Worker implements ConsumerInterface
     {
         $start = microtime(true);
 
-        sleep(mt_rand(20, 2000) / 1000);
-
-        echo $msg->delivery_info['delivery_tag'] . " ";
-        echo $msg->body . "\n";
+        $job = unserialize($msg->body);
+        usleep($job['size']);
 
         $this->collector->increment('alvi.jobs_processed');
 

@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+
+  ## Ubuntu 12.04 LTS (64-bit)
+  config.vm.box = "precise64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+
+  # network
+  config.vm.network :hostonly, :dhcp, :ip => "172.16.1.1", :netmask => "255.255.0.0"
+
+  # set memory to 1GB
+  config.vm.customize ["modifyvm", :id, "--memory", %vm_memory%]
+
+  # Set the default project share
+  config.vm.share_folder "data", "/data", "../../../../"
+
+  # Update deps
+  config.vm.provision :shell, :inline => "apt-get update --fix-missing"
+
+  # Enable Puppet
+  config.vm.provision :puppet do |puppet|
+    puppet.facter = { "fqdn" => "%vm_fqdn%", "hostname" => "%vm_fqdn%" }
+    puppet.manifests_path = "../../../../vagrant/puppet/manifests"
+    puppet.manifest_file  = "%vm_type%.pp"
+    puppet.module_path  = "../../../../vagrant/puppet/modules"
+  end
+
+  # misc
+  config.ssh.max_tries = 10
+  config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+end

@@ -18,6 +18,7 @@ Vagrant::Config.run do |config|
 
   # Update deps
   config.vm.provision :shell, :inline => "apt-get update --fix-missing"
+  config.vm.provision :shell, :inline => 'if [ "`/opt/vagrant_ruby/bin/puppet --version`" != "2.7.19" ]; then sudo /opt/vagrant_ruby/bin/gem install puppet -v 2.7.19 --no-ri --no-rdoc; fi'
 
   # Enable Puppet
   config.vm.provision :puppet do |puppet|

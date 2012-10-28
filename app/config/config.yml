@@ -26,6 +26,9 @@ old_sound_rabbit_mq:
         upload_picture:
             connection: default
             exchange_options: {name: 'upload-picture', type: direct}
+        scaler:
+            connection: default
+            exchange_options: {name: 'scaler', type: direct}
 
     consumers:
         upload_picture:

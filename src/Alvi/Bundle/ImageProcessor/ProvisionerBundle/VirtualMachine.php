@@ -47,4 +47,9 @@ class VirtualMachine
     {
         return $this->configuration;
     }
+
+    public function isBooted()
+    {
+        return null !== $this->ip && null !== $this->fqdn;
+    }
 }

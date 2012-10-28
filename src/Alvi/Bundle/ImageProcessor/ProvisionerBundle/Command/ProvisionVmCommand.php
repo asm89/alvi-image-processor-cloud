@@ -52,6 +52,10 @@ EOT
 
         $vm = $vagrantProvisioner->provision($vm);
 
-        $output->writeln(sprintf('Successfully provisioned the VM with ip <info>%s</info> and fqdn <info>%s</info>.', $vm->getIp(), $vm->getFqdn()));
+        if ($vm->isBooted()) {
+            $output->writeln(sprintf('Successfully provisioned the VM with ip <info>%s</info> and fqdn <info>%s</info>.', $vm->getIp(), $vm->getFqdn()));
+        } else {
+            $output->writeln('<error>Unable to boot the VM.</error>');
+        }
     }
 }

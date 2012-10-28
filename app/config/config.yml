@@ -16,7 +16,7 @@ framework:
 old_sound_rabbit_mq:
     connections:
         default:
-            host:      'localhost'
+            host:      172.16.1.23
             port:      5673
             user:      'guest'
             password:  'guest'

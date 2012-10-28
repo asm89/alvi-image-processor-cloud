@@ -43,7 +43,7 @@ Vagrant::Config.run do |config|
 
   # Enable Puppet
   config.vm.provision :puppet do |puppet|
-    puppet.facter = { "hostname" => "alvi-master" }
+    puppet.facter = { "fqdn" => "localhost", "hostname" => "localhost" }
     puppet.manifests_path = "puppet/manifests"
     puppet.manifest_file  = "master.pp"
     puppet.module_path  = "puppet/modules"

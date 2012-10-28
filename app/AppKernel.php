@@ -15,6 +15,7 @@ class AppKernel extends Kernel
 
             new Alvi\Bundle\ImageProcessor\JobSubmissionBundle\AlviImageProcessorJobSubmissionBundle(),
             new Alvi\Bundle\ImageProcessor\MonitoringBundle\AlviImageProcessorMonitoringBundle(),
+            new Alvi\Bundle\ImageProcessor\ProvisionerBundle\AlviImageProcessorProvisionerBundle(),
             new Alvi\Bundle\ImageProcessor\ScalerBundle\AlviImageProcessorScalerBundle(),
             new Alvi\Bundle\ImageProcessor\SchedulerBundle\AlviImageProcessorSchedulerBundle(),
             new Alvi\Bundle\ImageProcessor\WorkerBundle\AlviImageProcessorWorkerBundle(),

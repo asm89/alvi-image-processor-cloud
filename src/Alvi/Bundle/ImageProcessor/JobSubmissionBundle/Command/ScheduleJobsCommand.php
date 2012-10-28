@@ -23,11 +23,11 @@ class ScheduleJobsCommand extends ContainerAwareCommand
             ->setName('alvi:image-processor:jobSubmit')
             ->setDescription('Schedule incoming image process jobs.')
             ->setDefinition(array(
-                new InputOption('workloadSize', 'ws', InputOption::VALUE_OPTIONAL, "Amount of jobs to be submitted.", 1000),
+                new InputOption('workloadSize', 'ws', InputOption::VALUE_OPTIONAL, "Amount of jobs to be submitted.", 100000),
                 new InputOption('normalJobSize', 'njs', InputOption::VALUE_OPTIONAL, "Normal job size in microseconds.", 1000000),
                 new InputOption('burstJobSize', 'bjs', InputOption::VALUE_OPTIONAL, "Burst job size in microseconds.", 100000),
-                new InputOption('burstInterval', 'bi', InputOption::VALUE_OPTIONAL, "Burst interval number of normal message in between bursts.", 10),
-                new InputOption('burstSize', 'bs', InputOption::VALUE_OPTIONAL, "Number of jobs in a burst.", 100),
+                new InputOption('burstInterval', 'bi', InputOption::VALUE_OPTIONAL, "Burst interval number of normal message in between bursts.", 1000),
+                new InputOption('burstSize', 'bs', InputOption::VALUE_OPTIONAL, "Number of jobs in a burst.", 1000),
                 new InputOption('jobInterupt', 'ji', InputOption::VALUE_OPTIONAL, "Normal job interrupt in microseconds.", 200000),
             ))
                 ->setHelp(<<<EOT
@@ -53,11 +53,11 @@ EOT
         //job size in microseconds
         $normalJobSize = $input->getOption('normalJobSize');
         //TODO: change rand in stats_rand_gen_normal (install stats module with PECL)
-        $jobNormal = array('user_id' => 'normal', 'image_path' => '/path/to/new/pic.png', 'size' => rand($normalJobSize/2,$normalJobSize));
+        $jobNormal = array('user_id' => 'normal', 'image_path' => '/path/to/new/pic.png', 'size' => rand($normalJobSize/2,$normalJobSize), 'submitTime' => null);
         //burst job
         //job size in microseconds
         $burstJobSize = $input->getOption('burstJobSize');
-        $jobBurst = array('user_id' => 'burst', 'image_path' => '/path/to/new/pic.png', 'size' => rand($burstJobSize/2, $burstJobSize));
+        $jobBurst = array('user_id' => 'burst', 'image_path' => '/path/to/new/pic.png', 'size' => rand($burstJobSize/2, $burstJobSize), 'submitTime' => null);
         $jobCounter = 0;
         //burst interval
         $burstInterval = $input->getOption('burstInterval');
@@ -68,7 +68,10 @@ EOT
 
         //connection with graphite
         $collector = $container->get('beberlei_metrics.collector.statsd');
-
+        
+        //rabbitMQ
+        $rabbitMQ = $container->get('old_sound_rabbit_mq.upload_picture_producer');
+        
         while($workloadSizeCounter < $workloadSize)
         {
             //job interupt
@@ -78,7 +81,8 @@ EOT
                 //add message burst
                 for($i=0;$i<$burstSize;$i++)
                 {
-                    $container->get('old_sound_rabbit_mq.upload_picture_producer')->publish(serialize($jobBurst));
+                    $jobBurst['submitTime'] = microtime(true);
+                    $rabbitMQ->publish(serialize($jobBurst));
                     $collector->increment('alvi.jobs');
                     //send stats to graphite
                     $collector->flush();
@@ -88,8 +92,10 @@ EOT
             }
             else
             {
+                //add submit time to job
+                $jobNormal['submitTime'] = microtime(true);
                 //send normal message
-                $container->get('old_sound_rabbit_mq.upload_picture_producer')->publish(serialize($jobNormal));
+                $rabbitMQ->publish(serialize($jobNormal));
                 $collector->increment('alvi.jobs');
                 //send stats to graphite
                 $collector->flush();

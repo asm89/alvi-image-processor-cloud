@@ -2,6 +2,7 @@ include php
 include stdlib
 include graphite
 include zookeeper
+include phpzookeeper
 
 class { 'apt':
   always_apt_update => false

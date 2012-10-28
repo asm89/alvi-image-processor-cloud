@@ -1,6 +1,7 @@
 include php
 include stdlib
 include graphite
+include phpzookeeper
 
 # PHP Extensions
 php::module { ['xdebug', 'curl'] :

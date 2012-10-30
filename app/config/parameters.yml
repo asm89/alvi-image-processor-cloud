@@ -1,3 +1,5 @@
 parameters:
     locale: en
     secret: LfiZUtAVw3pFp82yoiOX
+    master_node: 172.16.1.23
+

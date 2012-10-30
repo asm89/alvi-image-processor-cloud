@@ -16,7 +16,7 @@ framework:
 old_sound_rabbit_mq:
     connections:
         default:
-            host:      172.16.1.23
+            host:      %master_node%
             port:      5673
             user:      'guest'
             password:  'guest'
@@ -42,3 +42,7 @@ beberlei_metrics:
     collectors:
         statsd:
             type: statsd
+
+alvi_image_processor_zookeeper:
+    hosts: %master_node%:2181
+

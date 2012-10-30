@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Alvi\Bundle\ImageProcessor\ScalerBundle\AlviImageProcessorScalerBundle(),
             new Alvi\Bundle\ImageProcessor\SchedulerBundle\AlviImageProcessorSchedulerBundle(),
             new Alvi\Bundle\ImageProcessor\WorkerBundle\AlviImageProcessorWorkerBundle(),
+            new Alvi\Bundle\ImageProcessor\ZookeeperBundle\AlviImageProcessorZookeeperBundle(),
         );
 
         return $bundles;

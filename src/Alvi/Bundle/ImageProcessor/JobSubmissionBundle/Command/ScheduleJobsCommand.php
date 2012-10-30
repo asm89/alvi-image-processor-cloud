@@ -52,12 +52,12 @@ EOT
         //normal message
         //job size in microseconds
         $normalJobSize = $input->getOption('normalJobSize');
-        //TODO: change rand in stats_rand_gen_normal (install stats module with PECL)
-        $jobNormal = array('user_id' => 'normal', 'image_path' => '/path/to/new/pic.png', 'size' => rand($normalJobSize/2,$normalJobSize), 'submitTime' => null);
+        //job size in microseconds
+        $jobNormal = array('user_id' => 'normal', 'image_path' => '/path/to/new/pic.png', 'size' => (stats_dens_normal(rand(-5,5),0,1)*10000000), 'submitTime' => null);
         //burst job
         //job size in microseconds
         $burstJobSize = $input->getOption('burstJobSize');
-        $jobBurst = array('user_id' => 'burst', 'image_path' => '/path/to/new/pic.png', 'size' => rand($burstJobSize/2, $burstJobSize), 'submitTime' => null);
+        $jobBurst = array('user_id' => 'burst', 'image_path' => '/path/to/new/pic.png', 'size' => (stats_dens_normal(rand(-5,5),0,1)*10000000), 'submitTime' => null);
         $jobCounter = 0;
         //burst interval
         $burstInterval = $input->getOption('burstInterval');

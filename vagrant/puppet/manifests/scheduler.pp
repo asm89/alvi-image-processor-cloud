@@ -3,6 +3,7 @@ include stdlib
 include graphite
 include zookeeper
 include phpzookeeper
+include phpstats
 
 class { 'apt':
   always_apt_update => false

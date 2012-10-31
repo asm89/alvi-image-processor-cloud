@@ -26,7 +26,7 @@ class QueueMeasurement
     public function getMovingAverageQueueSize() {
         //TODO queue size url toevoegen
         $commandQueueSize = "?target=movingAverage(stats.timers.alvi.jobs_finish_time.mean,10)&format=json&from=-1minutes";
-        $averageQueueSizeJsonData = $this->graphiteAPI->getDataFromGraphiteCommand($commandFinishTime);
+        $averageQueueSizeJsonData = $this->graphiteAPI->getDataFromGraphiteCommand($commandQueueSize);
         if(isset($averageQueueSizeJsonData[0]) && $averageQueueSizeJsonData[0]->datapoints) {
             $averageQueueSize = $this->calculateMovingAverage($averageQueueSizeJsonData[0]->datapoints);   
         }

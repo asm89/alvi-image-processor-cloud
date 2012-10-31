@@ -2,7 +2,7 @@
 
 namespace Alvi\Bundle\ImageProcessor\ScalerBundle\Policy;
 
-use Alvi\Bundle\ImageProcessor\ScalerBundle\Measurement\QueueSizeMeasurement;
+use Alvi\Bundle\ImageProcessor\ScalerBundle\Measurement\QueueMeasurement;
 use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineManager;
 
 /**
@@ -13,16 +13,18 @@ use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineManager;
 class QueueSizePolicy
 {
     
-    private $queueSizeMeasurement;
+    private $queueMeasurement;
     private $virtualMachineManager;
+    private $parameters;
     
     /**
      * @param ProcessFinishTimeMeasurement $pftm
      * @param VirtualMachineManager $vmm
      */
-    public function __construct(QueueSizeMeasurement $qsm, VirtualMachineManager $vmm)
+    public function __construct(PolicyParameters $pp, QueueMeasurement $qm, VirtualMachineManager $vmm)
     {
-        $this->queueSizeMeasurement = $qsm;
+        $this->parameters = $pp->getParameters('queuesizepolicy');
+        $this->queueMeasurement = $qm;
         $this->virtualMachineManager = $vmm;
     }
 
@@ -31,7 +33,7 @@ class QueueSizePolicy
      */
     public function policyDecision() {
         
-        $queueSize = $this->queueSizeMeasurement->getMovingAverageQueueSize();
+        $queueSize = $this->queueMeasurement->getMovingAverageQueueSize();
 
 
         //if no data is available do nothing
@@ -39,19 +41,19 @@ class QueueSizePolicy
             //do nothing
         }
         else {
-            //if the queue size is larger than 100 jobs scale up
-            if ($queueSize > 100) {
+            //if the queue size is larger than 'spinupqueuesize' jobs scale up
+            if ($queueSize > $this->parameters['spinupqueuesize']) {
                 //scale up
                 //number of workers that can spin up at the same time
-                if($this->virtualMachineManager->getSpinningUp("worker") <= 2) {
+                if($this->virtualMachineManager->getSpinningUp("worker") <= $this->parameters['spinupcap']) {
                     $this->virtualMachineManager->start("worker");
                 }
             }
-            //if the finish time is less than 2 times the process time scale down
-            elseif ($averageFinishTime/$averageProcessTime < 20) {
+            //if the queue size is less than 'spindownqueuesize' spin down a worker
+            elseif ($averageFinishTime/$averageProcessTime < $this->parameters['spindownqueuesize']) {
                 //scale down
                 //number of workers that can spin down at the same time
-                if($this->virtualMachineManager->getSpinningDown("worker") <= 2) {
+                if($this->virtualMachineManager->getSpinningDown("worker") <= $this->parameters['spindowncap']) {
                     $this->virtualMachineManager->stop("worker");
                 }
             }

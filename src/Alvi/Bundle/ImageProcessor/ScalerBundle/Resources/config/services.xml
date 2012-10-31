@@ -4,15 +4,20 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
            <services>
+               <service id="alvi.image_processor.scaler.policy.PolicyParameters" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\PolicyParameters">
+               </service>
                <service id="alvi.image_processor.scaler.policy.processfinishtimepolicy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\ProcessFinishTimePolicy">
+                   <argument type="service" id="alvi.image_processor.scaler.policy.PolicyParameters" />
                    <argument type="service" id="alvi.image_processor.scaler.policy.ProcessFinishTimeMeasurement" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
                </service>
                <service id="alvi.image_processor.scaler.policy.QueueSizePolicy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\QueueSizePolicy">
+                   <argument type="service" id="alvi.image_processor.scaler.policy.PolicyParameters" />
                    <argument type="service" id="alvi.image_processor.scaler.policy.QueueMeasurement" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
                </service>
                <service id="alvi.image_processor.scaler.policy.constantsizepolicy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\ConstantSizePolicy">
+                   <argument type="service" id="alvi.image_processor.scaler.policy.PolicyParameters" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
                </service>
                <service id="alvi.image_processor.scaler.policy.ProcessFinishTimeMeasurement" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Measurement\ProcessFinishTimeMeasurement">

@@ -37,19 +37,13 @@ EOT
 
         //connection with graphite
         $collector = $container->get('beberlei_metrics.collector.statsd');
-        //connection with rabbitMQ
-        $username = 'guest';
-        $password = 'guest';
-        $context = stream_context_create(array(
-            'http' => array(
-                'header'  => "Authorization: Basic " . base64_encode("$username:$password")
-            )
-        ));
         
-       while(true) {
-            //TODO fix static ip
-            $rabbitMQjsonResponse = file_get_contents("http://172.16.1.23:55672/api/queues/%2f/upload-picture", false, $context);
-            $rabbitMQqueueData = json_decode($rabbitMQjsonResponse, true);
+        //RabbitMQ api
+        $RabbitMQAPI = $container->get('alvi.image_processor.scaler.policy.rabbitmqapi');
+        
+        while(true) {
+            $rabbitMQqueueData = $RabbitMQAPI->executeApiCall("queues/%2f/upload-picture");
+            
             $collector->timing('alvi.queue.size.upload-picture.',$rabbitMQqueueData['messages_ready']);
             if(isset($rabbitMQqueueData['incoming']['stats']['publish_details']['rate'])) {
                 $collector->timing('alvi.queue.incomming_rate.upload-picture',$rabbitMQqueueData['incoming']['stats']['publish_details']['rate']);

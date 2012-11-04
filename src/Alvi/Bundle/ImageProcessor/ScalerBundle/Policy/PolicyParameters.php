@@ -16,15 +16,15 @@ class PolicyParameters
     public function __construct() {
         
         //paramters for constant size policy
-        $policyParameters['constantsizepolicy'] = array(      "maxnumberofworkers"    => 5,   //max number of workers
+        $this->policyParameters['constantsizepolicy'] = array(      "maxnumberofworkers"    => 5,   //max number of workers
                                                         "spinupcap"             => 3);  //number of workers that can spin up at the same time
         //paramters for process/finish time policy
-        $policyParameters['timepolicy'] = array(        "spinupratio"           => 5,   // finishtime/processtime
+        $this->policyParameters['timepolicy'] = array(        "spinupratio"           => 5,   // finishtime/processtime
                                                         "spindownratio"         => 2,   // finishtime/processtime
                                                         "spinupcap"             => 3,  //number of workers that can spin up at the same time
                                                         "spindowncap"           => 3);  //number of workers that can spin down at the same time
         //paramters for queue size policy
-        $policyParameters['queuesizepolicy'] = array(   "spinupqueuesize"       => 100, // number of items in queue
+        $this->policyParameters['queuesizepolicy'] = array(   "spinupqueuesize"       => 100, // number of items in queue
                                                         "spindownqueuesize"     => 20,  // number of items in queue
                                                         "spinupcap"             => 3,  //number of workers that can spin up at the same time
                                                         "spindowncap"           => 3);  //number of workers that can spin down at the same time

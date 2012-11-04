@@ -50,10 +50,10 @@ EOT
         
 
         while (true) {
-            //wait 10 seconds and rescale the system.
-            sleep(10);
             //choose a policy
             $policy->policyDecision();
+            //wait 10 seconds and rescale the system.
+            sleep(10);
         }
     }
 }

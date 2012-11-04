@@ -41,3 +41,8 @@ $ cd vagrant
 $ cd /data
 /data $ app/console alvi:image-processor:jobSubmit
 ```
+
+Start job submit from a previous recorded file
+```bash
+/data $ app/console alvi:image-processor:jobSubmit --workloadFilepath /data/normalWorkload.log --openWorkload true
+```

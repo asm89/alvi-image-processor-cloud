@@ -23,16 +23,16 @@ class ScheduleJobsCommand extends ContainerAwareCommand
             ->setName('alvi:image-processor:jobSubmit')
             ->setDescription('Schedule incoming image process jobs.')
             ->setDefinition(array(
-                new InputOption('workloadSize', 'ws', InputOption::VALUE_OPTIONAL, "Amount of jobs to be submitted.", 3000),
-                new InputOption('normalJobSize', 'njs', InputOption::VALUE_OPTIONAL, "Normal job size in microseconds.", 1000000),
-                new InputOption('burstJobSize', 'bjs', InputOption::VALUE_OPTIONAL, "Burst job size in microseconds.", 1000000),
-                new InputOption('burstInterval', 'bi', InputOption::VALUE_OPTIONAL, "Burst interval number of normal message in between bursts.", 600),
-                new InputOption('burstCount', 'bc', InputOption::VALUE_OPTIONAL, "Number of bursts.", 0),
-                new InputOption('burstSize', 'bs', InputOption::VALUE_OPTIONAL, "Number of jobs in a burst.", 600),
-                new InputOption('jobInterupt', 'ji', InputOption::VALUE_OPTIONAL, "Normal job interrupt in microseconds.", 100000),
-                new InputOption('recordWorkload', 'rw', InputOption::VALUE_OPTIONAL, "Record the workload pattern for later use.", false),
-                new InputOption('openWorkload', 'ow', InputOption::VALUE_OPTIONAL, "Read the workload pattern from a file.", false),
-                new InputOption('workloadFilepath', 'wf', InputOption::VALUE_OPTIONAL, "Record filepath", '/data/workload.log'),
+                new InputOption('workloadSize', '', InputOption::VALUE_OPTIONAL, "Amount of jobs to be submitted.", 3000),
+                new InputOption('normalJobSize', '', InputOption::VALUE_OPTIONAL, "Normal job size in microseconds.", 1000000),
+                new InputOption('burstJobSize', '', InputOption::VALUE_OPTIONAL, "Burst job size in microseconds.", 1000000),
+                new InputOption('burstInterval', '', InputOption::VALUE_OPTIONAL, "Burst interval number of normal message in between bursts.", 600),
+                new InputOption('burstCount', '', InputOption::VALUE_OPTIONAL, "Number of bursts.", 0),
+                new InputOption('burstSize', '', InputOption::VALUE_OPTIONAL, "Number of jobs in a burst.", 600),
+                new InputOption('jobInterupt', '', InputOption::VALUE_OPTIONAL, "Normal job interrupt in microseconds.", 100000),
+                new InputOption('recordWorkload', '', InputOption::VALUE_OPTIONAL, "Record the workload pattern for later use.", false),
+                new InputOption('openWorkload', '', InputOption::VALUE_OPTIONAL, "Read the workload pattern from a file.", false),
+                new InputOption('workloadFilepath', '', InputOption::VALUE_OPTIONAL, "Record filepath", '/data/workload.log'),
             ))
                 ->setHelp(<<<EOT
 The <info>%command.name%</info> command will schedule incoming image processing jobs.
@@ -84,10 +84,13 @@ EOT
         
         
         //if read workoad from file is true
+        //replay a recorded workload
         if($input->getOption('openWorkload') == true) {
             $workload = $this->readWorkloadFromFile($workloadFilepath);
             foreach($workload as $job) {
-                usleep($job['jobInterupt']);
+                if($job['jobInterupt'] != 0) {
+                    usleep($job['jobInterupt']);
+                }
                 $job['submitTime'] = microtime(true);
                 $rabbitMQ->publish(serialize($job));
                 $collector->increment('alvi.jobs');

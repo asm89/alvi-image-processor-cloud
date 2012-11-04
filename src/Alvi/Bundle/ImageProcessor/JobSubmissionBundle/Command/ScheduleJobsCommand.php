@@ -29,7 +29,7 @@ class ScheduleJobsCommand extends ContainerAwareCommand
                 new InputOption('burstInterval', '', InputOption::VALUE_OPTIONAL, "Burst interval number of normal message in between bursts.", 600),
                 new InputOption('burstCount', '', InputOption::VALUE_OPTIONAL, "Number of bursts.", 0),
                 new InputOption('burstSize', '', InputOption::VALUE_OPTIONAL, "Number of jobs in a burst.", 600),
-                new InputOption('jobInterupt', '', InputOption::VALUE_OPTIONAL, "Normal job interrupt in microseconds.", 100000),
+                new InputOption('jobInterupt', '', InputOption::VALUE_OPTIONAL, "Normal job interrupt in microseconds.", 300000),
                 new InputOption('recordWorkload', '', InputOption::VALUE_OPTIONAL, "Record the workload pattern for later use.", false),
                 new InputOption('openWorkload', '', InputOption::VALUE_OPTIONAL, "Read the workload pattern from a file.", false),
                 new InputOption('workloadFilepath', '', InputOption::VALUE_OPTIONAL, "Record filepath", '/data/workload.log'),

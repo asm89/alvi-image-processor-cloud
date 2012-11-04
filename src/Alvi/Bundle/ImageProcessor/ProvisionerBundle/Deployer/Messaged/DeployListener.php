@@ -46,6 +46,7 @@ class DeployListener implements ConsumerInterface
         $command = unserialize($msg->body);
 
         $this->collector->increment('alvi.deployer.commands_started');
+        $this->collector->flush();
 
         $start = microtime(true);
 

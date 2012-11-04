@@ -27,6 +27,7 @@
         <service id="alvi.image_processor.provisioner.deployer.messaged.deploy" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\DeployListener">
             <argument type="service" id="alvi.image_processor.provisioner.vagrant_provisioner" />
             <argument type="service" id="old_sound_rabbit_mq.deployer_callback_producer" />
+            <argument type="service" id="beberlei_metrics.collector.statsd" />
         </service>
 
         <service id="alvi.image_processor.provisioner.deployer.messaged.callback" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\CallbackListener">

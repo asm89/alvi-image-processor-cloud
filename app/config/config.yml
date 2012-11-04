@@ -55,6 +55,7 @@ beberlei_metrics:
     collectors:
         statsd:
             type: statsd
+            host: %master_node%
 
 alvi_image_processor_zookeeper:
     hosts: %master_node%:2181

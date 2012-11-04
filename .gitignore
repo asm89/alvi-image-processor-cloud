@@ -9,3 +9,4 @@ bin/*
 composer.phar
 vagrant/.vagrant
 tags
+vagrant/*.box

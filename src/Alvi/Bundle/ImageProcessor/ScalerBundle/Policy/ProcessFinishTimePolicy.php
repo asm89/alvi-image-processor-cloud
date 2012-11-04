@@ -15,13 +15,15 @@ class ProcessFinishTimePolicy
     
     private $processFinishTimeMeasurement;
     private $virtualMachineManager;
+    private $parameters;
     
     /**
      * @param ProcessFinishTimeMeasurement $pftm
      * @param VirtualMachineManager $vmm
      */
-    public function __construct(ProcessFinishTimeMeasurement $pftm, VirtualMachineManager $vmm)
+    public function __construct(PolicyParameters $pp, ProcessFinishTimeMeasurement $pftm, VirtualMachineManager $vmm)
     {
+        $this->parameters = $pp->getParameters('timepolicy');
         $this->processFinishTimeMeasurement = $pftm;
         $this->virtualMachineManager = $vmm;
     }
@@ -40,16 +42,16 @@ class ProcessFinishTimePolicy
         }
         else {
             //if the finish time is more than 5 times the process time scale up
-            if ($averageFinishTime/$averageProcessTime > 5) {
+            if ($averageFinishTime/$averageProcessTime > $this->parameters['spinupratio']) {
                 //scale up
-                if($this->virtualMachineManager->getSpinningUp("worker") <= 2) {
+                if($this->virtualMachineManager->getSpinningUp("worker") < $this->parameters['spinupcap']) {
                     $this->virtualMachineManager->start("worker");
                 }
             }
             //if the finish time is less than 2 times the process time scale down
-            elseif ($averageFinishTime/$averageProcessTime < 2) {
+            elseif ($averageFinishTime/$averageProcessTime < $this->parameters['spindownratio']) {
                 //scale down
-                if($this->virtualMachineManager->getSpinningDown("worker") <= 2) {
+                if($this->virtualMachineManager->getSpinningDown("worker") < $this->parameters['spindowncap']) {
                     $this->virtualMachineManager->stop("worker");
                 }
             }

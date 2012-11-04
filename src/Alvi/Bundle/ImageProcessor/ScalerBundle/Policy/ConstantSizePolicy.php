@@ -28,9 +28,9 @@ class ConstantSizePolicy
      */
     public function policyDecision() {
         //scale up if less than 5 workers
-        if($this->virtualMachineManager->getRunning("worker") < $this->parameters['maxnumberofworkers']) {
+        if($this->virtualMachineManager->getRunningCount("worker") < $this->parameters['maxnumberofworkers']) {
             //workers that can spin up at the same time
-            if($this->virtualMachineManager->getSpinningUp("worker") < $this->parameters['spinupcap']) {
+            if($this->virtualMachineManager->getSpinningUpCount("worker") < $this->parameters['spinupcap']) {
                 $this->virtualMachineManager->start("worker");
             }
         }

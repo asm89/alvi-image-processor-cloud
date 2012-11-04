@@ -45,7 +45,7 @@ class QueueSizePolicy
             if ($queueSize > $this->parameters['spinupqueuesize']) {
                 //scale up
                 //number of workers that can spin up at the same time
-                if($this->virtualMachineManager->getSpinningUp("worker") <= $this->parameters['spinupcap']) {
+                if($this->virtualMachineManager->getSpinningUpCount("worker") <= $this->parameters['spinupcap']) {
                     $this->virtualMachineManager->start("worker");
                 }
             }
@@ -53,7 +53,7 @@ class QueueSizePolicy
             elseif ($averageFinishTime/$averageProcessTime < $this->parameters['spindownqueuesize']) {
                 //scale down
                 //number of workers that can spin down at the same time
-                if($this->virtualMachineManager->getSpinningDown("worker") <= $this->parameters['spindowncap']) {
+                if($this->virtualMachineManager->getSpinningDownCount("worker") <= $this->parameters['spindowncap']) {
                     $this->virtualMachineManager->stop("worker");
                 }
             }

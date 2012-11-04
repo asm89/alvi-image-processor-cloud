@@ -44,14 +44,14 @@ class ProcessFinishTimePolicy
             //if the finish time is more than 5 times the process time scale up
             if ($averageFinishTime/$averageProcessTime > $this->parameters['spinupratio']) {
                 //scale up
-                if($this->virtualMachineManager->getSpinningUp("worker") < $this->parameters['spinupcap']) {
+                if($this->virtualMachineManager->getSpinningUpCount("worker") < $this->parameters['spinupcap']) {
                     $this->virtualMachineManager->start("worker");
                 }
             }
             //if the finish time is less than 2 times the process time scale down
             elseif ($averageFinishTime/$averageProcessTime < $this->parameters['spindownratio']) {
                 //scale down
-                if($this->virtualMachineManager->getSpinningDown("worker") < $this->parameters['spindowncap']) {
+                if($this->virtualMachineManager->getSpinningDownCount("worker") < $this->parameters['spindowncap']) {
                     $this->virtualMachineManager->stop("worker");
                 }
             }

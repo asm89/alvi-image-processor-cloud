@@ -20,6 +20,10 @@ Vagrant::Config.run do |config|
   config.vm.provision :shell, :inline => "apt-get update --fix-missing"
   config.vm.provision :shell, :inline => 'if [ "`/opt/vagrant_ruby/bin/puppet --version`" != "2.7.19" ]; then sudo /opt/vagrant_ruby/bin/gem install puppet -v 2.7.19 --no-ri --no-rdoc; fi'
 
+
+  # set the hostname
+  config.vm.host_name = "%vm_fqdn%"
+
   # Enable Puppet
   config.vm.provision :puppet do |puppet|
     puppet.facter = { "fqdn" => "%vm_fqdn%", "hostname" => "%vm_fqdn%" }

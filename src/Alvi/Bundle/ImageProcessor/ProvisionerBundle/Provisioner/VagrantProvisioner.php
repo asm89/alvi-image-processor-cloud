@@ -119,9 +119,13 @@ class VagrantProvisioner implements ProvisionerInterface
     {
         $basefile = file_get_contents($this->basefile);
 
+        $type = $virtualMachine->getConfiguration()->getType();
+
+        $fqdn = sprintf('%s%03d', $type, $virtualMachine->getNumber());
+
         $vagrantfile = str_replace(
-            array('%vm_memory%',    '%vm_type%',),
-            array($virtualMachine->getConfiguration()->getMemory(), $virtualMachine->getConfiguration()->getType(),),
+            array('%vm_memory%',                                    '%vm_type%', '%vm_fqdn%'),
+            array($virtualMachine->getConfiguration()->getMemory(), $type,       $fqdn),
             $basefile
         );
 

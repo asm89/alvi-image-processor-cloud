@@ -3,12 +3,11 @@
 namespace Alvi\Bundle\ImageProcessor\ProvisionerBundle\Provisioner;
 
 use Alvi\Bundle\ImageProcessor\ProvisionerBundle\ProvisionerInterface;
-use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineConfiguration;
+use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachine;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ProcessBuilder;
-use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachine;
 
 /**
  * Provision virtual machines using vagrant.
@@ -48,9 +47,9 @@ class VagrantProvisioner implements ProvisionerInterface
     /**
      * {@inheritDoc}
      */
-    public function provision(VirtualMachineConfiguration $virtualMachineConfiguration)
+    public function provision(VirtualMachine $vm)
     {
-        $virtualMachine = new VagrantVirtualMachine($virtualMachineConfiguration);
+        $virtualMachine = VagrantVirtualMachine::create($vm);
 
         $this->assignNumber($virtualMachine);
         $this->createRunDirectory($virtualMachine);
@@ -135,13 +134,13 @@ class VagrantProvisioner implements ProvisionerInterface
     {
         $basefile = file_get_contents($this->basefile);
 
-        $type = $virtualMachine->getConfiguration()->getType();
+        $type = $virtualMachine->getType();
 
         $fqdn = sprintf('%s%03d', $type, $virtualMachine->getNumber());
 
         $vagrantfile = str_replace(
-            array('%vm_memory%',                                    '%vm_type%', '%vm_fqdn%'),
-            array($virtualMachine->getConfiguration()->getMemory(), $type,       $fqdn),
+            array('%vm_memory%',               '%vm_type%', '%vm_fqdn%'),
+            array($virtualMachine->getMemory(), $type,       $fqdn),
             $basefile
         );
 
@@ -155,7 +154,7 @@ class VagrantProvisioner implements ProvisionerInterface
      */
     private function createRunDirectory(VagrantVirtualMachine $virtualMachine)
     {
-        $typeDirectory = $this->getTypeDirectory($virtualMachine->getConfiguration()->getType());
+        $typeDirectory = $this->getTypeDirectory($virtualMachine->getType());
 
         $filesystem = new Filesystem();
         if (!$filesystem->exists($typeDirectory)) {
@@ -176,7 +175,7 @@ class VagrantProvisioner implements ProvisionerInterface
      */
     private function assignNumber(VagrantVirtualMachine $virtualMachine)
     {
-        $typeDirectory = $this->getTypeDirectory($virtualMachine->getConfiguration()->getType());
+        $typeDirectory = $this->getTypeDirectory($virtualMachine->getType());
 
         $filesystem = new Filesystem();
         if (!$filesystem->exists($typeDirectory)) {

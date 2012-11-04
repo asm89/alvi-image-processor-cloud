@@ -9,13 +9,17 @@ namespace Alvi\Bundle\ImageProcessor\ProvisionerBundle;
  */
 class VirtualMachine
 {
-    private $configuration;
     private $fqdn;
     private $ip;
     private $state;
+    private $id;
+    private $type;
+    private $memory;
 
+    const STATE_DESTROYING   = 'destroying';
     const STATE_DESTROYED    = 'destroyed';
     const STATE_FAILED       = 'failed';
+    const STATE_PREPARING    = 'preparing';
     const STATE_RUNNING      = 'running';
     const STATE_SPINNINGDOWN = 'spinningup';
     const STATE_SPINNINGUP   = 'spinningdown';
@@ -23,11 +27,33 @@ class VirtualMachine
     /**
      * Constructor.
      *
-     * @param VirtualMachineConfiguration $configuration
+     * @param string  $type
+     * @param integer $memory In MB
      */
-    public function __construct(VirtualMachineConfiguration $configuration)
+    public function __construct($type, $memory = 256)
     {
-        $this->configuration = $configuration;
+        $this->type   = $type;
+        $this->memory = $memory;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function getMemory()
+    {
+        return $this->memory;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     public function getFqdn()

@@ -36,6 +36,16 @@ class VirtualMachineManager
      *
      * @return integer
      */
+    public function getPreparingCount($type)
+    {
+        return $this->getNumberByType($type, '/nodes/preparing');
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return integer
+     */
     public function getRunningCount($type)
     {
         return $this->getNumberByType($type, '/nodes/running');
@@ -101,13 +111,13 @@ class VirtualMachineManager
     public function setMachineState(VirtualMachine $vm, $state)
     {
         if (null !== $vm->getState()) {
-            $path = $this->createStatePath($vm->getState(), $vm->getFqdn());
+            $path = $this->createStatePath($vm->getState(), $vm->getId());
             $this->zookeeper->delete($path);
         }
 
         $vm->setState($state);
 
-        $path = $this->createStatePath($vm->getState(), $vm->getFqdn());
+        $path = $this->createStatePath($vm->getState(), $vm->getId());
         $this->zookeeper->set($path, serialize($vm));
     }
 
@@ -127,7 +137,17 @@ class VirtualMachineManager
      */
     public function start($type)
     {
-        $this->deployer->provision($type);
+        // todo: get memory from configuration?
+        $virtualMachine = new VirtualMachine($type);
+
+        // todo: better uuid? semi unique id, trying to prevent collision
+        $i = $this->getPreparingCount($type) + 1;
+        $uuid = $i . '_' . (microtime(true) * 10000);
+        $virtualMachine->setId($type . $uuid);
+
+        $this->setMachineState($virtualMachine, VirtualMachine::STATE_PREPARING);
+
+        $this->deployer->provision($virtualMachine);
     }
 
     /**
@@ -143,8 +163,11 @@ class VirtualMachineManager
             return;
         }
 
-        $vm = unserialize($this->zookeeper->get('/nodes/running/' . current($vms)));
+        $virtualMachine = unserialize($this->zookeeper->get('/nodes/running/' . current($vms)));
 
-        $this->deployer->destroy($vm);
+        // todo: loop until the worker queue is empty or whatever?
+        $this->setMachineState($virtualMachine, VirtualMachine::STATE_DESTROYING);
+
+        $this->deployer->destroy($virtualMachine);
     }
 }

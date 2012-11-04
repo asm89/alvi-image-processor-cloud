@@ -10,13 +10,13 @@ namespace Alvi\Bundle\ImageProcessor\ProvisionerBundle;
 interface ProvisionerInterface
 {
     /**
-     * Provision a VM with the given configuration.
+     * Provision a given VM.
      *
-     * @param VirtualMachineConfiguration $vm
+     * @param VirtualMachine $vm
      *
      * @return VirtualMachine
      */
-    public function provision(VirtualMachineConfiguration $vmConfiguration);
+    public function provision(VirtualMachine $vm);
 
     /**
      * Destroys a given VM.

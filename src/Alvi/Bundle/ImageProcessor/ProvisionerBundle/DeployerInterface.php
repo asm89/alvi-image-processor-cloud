@@ -20,7 +20,7 @@ interface DeployerInterface
      *
      * @param string $type
      */
-    public function provision($type);
+    public function provision(VirtualMachine $vm);
 
     /**
      * Destroy and unregister a VM of the given type.

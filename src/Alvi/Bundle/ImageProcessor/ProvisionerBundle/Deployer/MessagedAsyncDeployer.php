@@ -28,9 +28,9 @@ class MessagedAsyncDeployer implements DeployerInterface
     /**
      * {@inheritDoc}
      */
-    public function provision($type)
+    public function provision(VirtualMachine $vm)
     {
-        $this->sendCommand(new ProvisionCommand($type));
+        $this->sendCommand(new ProvisionCommand($vm));
     }
 
     /**

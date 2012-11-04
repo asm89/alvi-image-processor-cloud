@@ -3,7 +3,6 @@
 namespace Alvi\Bundle\ImageProcessor\ProvisionerBundle\Provisioner;
 
 use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachine;
-use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineConfiguration;
 
 /**
  * Vagrant virtual machine.
@@ -15,9 +14,21 @@ class VagrantVirtualMachine extends VirtualMachine
     private $runDirectory;
     private $number;
 
-    public function __construct(VirtualMachineConfiguration $configuration)
+    public function __construct($type, $memory = 256)
     {
-        parent::__construct($configuration);
+        parent::__construct($type, $memory);
+    }
+
+    public static function create(VirtualMachine $machine)
+    {
+        $vm = new self($machine->getType(), $machine->getMemory());
+
+        $vm->setFqdn($machine->getFqdn());
+        $vm->setIp($machine->getIp());
+        $vm->setId($machine->getId());
+        $vm->setState($machine->getState());
+
+        return $vm;
     }
 
     public function getRunDirectory()
@@ -38,6 +49,6 @@ class VagrantVirtualMachine extends VirtualMachine
     public function setNumber($number)
     {
         $this->number = $number;
-        $this->setFqdn($this->getConfiguration()->getType() . sprintf('%03d', $number));
+        $this->setFqdn($this->getType() . sprintf('%03d', $number));
     }
 }

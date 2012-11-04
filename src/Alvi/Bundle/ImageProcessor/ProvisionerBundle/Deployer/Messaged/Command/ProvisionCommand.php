@@ -2,6 +2,8 @@
 
 namespace Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\Command;
 
+use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachine;
+
 /**
  * Provision a VM of the given type.
  *
@@ -9,21 +11,21 @@ namespace Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\Command
  */
 class ProvisionCommand
 {
-    private $type;
+    private $vm;
 
     /**
      * @param string $type
      */
-    public function __construct($type)
+    public function __construct(VirtualMachine $vm)
     {
-        $this->type = $type;
+        $this->vm = $vm;
     }
 
     /**
-     * @return string
+     * @return VirtualMachine
      */
-    public function getType()
+    public function getVirtualMachine()
     {
-        return $this->type;
+        return $this->vm;
     }
 }

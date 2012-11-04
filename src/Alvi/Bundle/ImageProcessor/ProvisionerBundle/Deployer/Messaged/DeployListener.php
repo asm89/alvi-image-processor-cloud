@@ -7,7 +7,6 @@ use Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\Command\Destr
 use Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\Command\SetStateCommand;
 use Alvi\Bundle\ImageProcessor\ProvisionerBundle\ProvisionerInterface;
 use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachine;
-use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineConfiguration;
 use Beberlei\Metrics\Collector\Collector;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
@@ -74,13 +73,12 @@ class DeployListener implements ConsumerInterface
      */
     public function provision(ProvisionCommand $command)
     {
-        // todo: configure MB somewhere?
-        $vmConfiguration = new VirtualMachineConfiguration($command->getType(), 256);
+        $vm = $command->getVirtualMachine();
 
         // todo: log?
         //$output->writeln(sprintf('Provisioning a <info>%s</info> VM with <info>%sMB</info> ram.', $vm->getType(), $vm->getMemory()));
 
-        $vm = $this->provisioner->provision($vmConfiguration);
+        $vm = $this->provisioner->provision($vm);
 
         if ($vm->isBooted()) {
             // todo: log?

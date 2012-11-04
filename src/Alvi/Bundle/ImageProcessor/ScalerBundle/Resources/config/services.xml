@@ -28,5 +28,7 @@
                </service>
                <service id="alvi.image_processor.scaler.policy.GraphiteAPI" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Measurement\GraphiteAPI">
                </service>
+               <service id="alvi.image_processor.scaler.policy.rabbitmqapi" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Measurement\RabbitMQAPI">
+               </service>
            </services>           
 </container>

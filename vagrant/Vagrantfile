@@ -21,7 +21,7 @@ Vagrant::Config.run do |config|
   config.vm.share_folder "data", "/data", "../"
 
   # Update deps
-  # config.vm.provision :shell, :inline => "apt-get update --fix-missing"
+  config.vm.provision :shell, :inline => "apt-get update --fix-missing"
 
   # Enable Puppet
   config.vm.provision :puppet do |puppet|

@@ -18,6 +18,7 @@ class phpzookeeper() {
 
     exec {
         "Install 'php-zookeeper' with pecl":
+            require => Package['php-pear'],
             command => "pecl install zookeeper-0.2.1",
             creates => "/usr/lib/php5/20090626/zookeeper.so";
     }

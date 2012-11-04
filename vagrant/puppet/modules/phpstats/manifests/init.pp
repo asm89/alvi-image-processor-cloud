@@ -5,6 +5,7 @@ class phpstats() {
 
     exec {
         "Install 'stats' with pecl":
+            require => Package['php-pear'],
             command => "pecl install http://pecl.php.net/get/stats-1.0.2.tgz",
             creates => "/usr/lib/php5/20090626/stats.so";
     }

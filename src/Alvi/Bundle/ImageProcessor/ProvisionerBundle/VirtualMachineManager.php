@@ -69,7 +69,7 @@ class VirtualMachineManager
      */
     private function getNumberByType($type, $path)
     {
-        $children = $this->getByType($type);
+        $children = $this->getByType($type, $path);
 
         return array_reduce($children,
             function($total, $child) { return $total + 1; },

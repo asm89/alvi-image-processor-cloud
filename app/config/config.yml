@@ -26,12 +26,15 @@ old_sound_rabbit_mq:
         upload_picture:
             connection: default
             exchange_options: {name: 'upload-picture', type: direct}
+            queue_options:    {name: 'deployer'}
         deployer:
             connection: default
             exchange_options: {name: 'deployer', type: direct}
+            queue_options:    {name: 'deployer'}
         deployer_callback:
             connection: default
             exchange_options: {name: 'deployer_callback', type: direct}
+            queue_options:    {name: 'deployer_callback'}
 
     consumers:
         upload_picture:

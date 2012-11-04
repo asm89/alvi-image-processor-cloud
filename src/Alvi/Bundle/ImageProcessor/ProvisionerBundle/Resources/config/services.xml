@@ -16,8 +16,21 @@
         </service>
 
         <service id="alvi.image_processor.provisioner.manager" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineManager">
-            <argument type="service" id="alvi.image_processor.provisioner.vagrant_provisioner" />
+            <argument type="service" id="alvi.image_processor.provisioner.messaged_async_deployer" />
             <argument type="service" id="alvi.image_processor.zookeeper" />
+        </service>
+
+        <service id="alvi.image_processor.provisioner.messaged_async_deployer" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\MessagedAsyncDeployer">
+            <argument type="service" id="old_sound_rabbit_mq.deployer_producer" />
+        </service>
+
+        <service id="alvi.image_processor.provisioner.deployer.messaged.deploy" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\DeployListener">
+            <argument type="service" id="alvi.image_processor.provisioner.vagrant_provisioner" />
+            <argument type="service" id="old_sound_rabbit_mq.deployer_callback_producer" />
+        </service>
+
+        <service id="alvi.image_processor.provisioner.deployer.messaged.callback" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\Deployer\Messaged\CallbackListener">
+            <argument type="service" id="alvi.image_processor.provisioner.manager" />
         </service>
     </services>
 </container>

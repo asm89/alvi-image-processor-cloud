@@ -8,6 +8,7 @@ use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineConfiguration;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\ProcessBuilder;
+use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachine;
 
 /**
  * Provision virtual machines using vagrant.
@@ -45,7 +46,7 @@ class VagrantProvisioner implements ProvisionerInterface
     }
 
     /**
-     * @param VirtualMachineConfiguration $vm
+     * {@inheritDoc}
      */
     public function provision(VirtualMachineConfiguration $virtualMachineConfiguration)
     {
@@ -58,6 +59,22 @@ class VagrantProvisioner implements ProvisionerInterface
         $this->determineIp($virtualMachine);
 
         return $virtualMachine;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function destroy(VirtualMachine $virtualMachine)
+    {
+        // vagrant up!
+        $builder = $this->createProcessBuilder($virtualMachine, array('vagrant', 'destroy', '--force'));
+
+        $process = $builder->getProcess();
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException($process->getErrorOutput());
+        }
     }
 
     private function determineIp(VagrantVirtualMachine $virtualMachine)
@@ -101,7 +118,7 @@ class VagrantProvisioner implements ProvisionerInterface
      * Create a process builder relative ready to run vagrant commands.
      *
      * @param VagrantVirtualMachine $virtualMachine
-     * @param array $arguments
+     * @param array                 $arguments
      */
     private function createProcessBuilder(VagrantVirtualMachine $virtualMachine, array $arguments)
     {
@@ -110,7 +127,6 @@ class VagrantProvisioner implements ProvisionerInterface
             ->setWorkingDirectory($virtualMachine->getRunDirectory())
             ->setTimeout(self::TIMEOUT);
     }
-
 
     /**
      * @param VagrantVirtualMachine $virtualMachine

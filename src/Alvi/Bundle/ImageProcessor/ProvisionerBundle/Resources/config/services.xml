@@ -15,6 +15,9 @@
             <argument>%alvi.image_processor.provisioner.vagrant_provisioner.vagrant_base_file%</argument>
         </service>
 
-        <service id="alvi.image_processor.provisioner.manager" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineManager" />
+        <service id="alvi.image_processor.provisioner.manager" class="Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineManager">
+            <argument type="service" id="alvi.image_processor.provisioner.vagrant_provisioner" />
+            <argument type="service" id="alvi.image_processor.zookeeper" />
+        </service>
     </services>
 </container>

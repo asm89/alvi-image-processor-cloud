@@ -2,54 +2,65 @@
 
 namespace Alvi\Bundle\ImageProcessor\ProvisionerBundle;
 
+use Alvi\Bundle\ImageProcessor\ZookeeperBundle\Zookeeper;
+
 /**
  * Exposes an API for adding/removing virtual machines.
+ *
+ * The state of the virtual machines is kept in zookeeper for now. The
+ * following structure is assumed:
+ *     /nodes/spinup/worker001
+ *     /nodes/spindown/worker002
+ *     /nodes/running/worker003
+ *
+ * Each file contains the serialized VirtualMachine class.
  *
  * @author Alexander <iam.asm89@gmail.com>
  */
 class VirtualMachineManager
 {
-    private $running;
-    private $spinningUp;
-    private $spinningDown;
+    public function __construct(ProvisionerInterface $provisioner, Zookeeper $zookeeper)
+    {
+        $this->provisioner = $provisioner;
+        $this->zookeeper   = $zookeeper;
+    }
 
     public function getRunning($type)
     {
-        return $this->running;
+        return $this->getNumberByType($type, '/nodes/running');
     }
 
     public function getSpinningUp($type)
     {
-        return $this->spinningUp;
+        return $this->getNumberByType($type, '/nodes/spinningup');
     }
 
     public function getSpinningDown($type)
     {
-        return $this->spinningDown;
+        return $this->getNumberByType($type, '/nodes/spinningdown');
     }
 
-    public function setRunning($running)
+    private function getNumberByType($type, $path)
     {
-        $this->running = $running;
-    }
+        if (null === $this->zookeeper->get($path)) {
+            return 0;
+        }
 
-    public function setSpinningUp($x)
-    {
-        $this->spinningUp = $x;
-    }
+        $children = $this->zookeeper->getChildren($path);
 
-    public function setSpinningDown($x)
-    {
-        $this->spinningDown = $x;
+        return array_reduce($children,
+            function($total, $child) use ($type) { return $total + (false !== strpos($child, $type) ? 1 : 0); },
+            0
+        );
     }
 
     public function start($type)
     {
-        $this->running++;
+        // message deployer
     }
 
     public function stop($type)
     {
-        $this->running--;
+        // message deployer
     }
 }

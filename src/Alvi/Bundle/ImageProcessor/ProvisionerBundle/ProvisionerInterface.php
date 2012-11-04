@@ -16,5 +16,12 @@ interface ProvisionerInterface
      *
      * @return VirtualMachine
      */
-    public function provision(VirtualMachineConfiguration $vm);
+    public function provision(VirtualMachineConfiguration $vmConfiguration);
+
+    /**
+     * Destroys a given VM.
+     *
+     * @param VirtualMachine
+     */
+    public function destroy(VirtualMachine $vm);
 }

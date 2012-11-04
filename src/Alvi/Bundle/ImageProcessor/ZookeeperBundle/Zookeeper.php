@@ -43,7 +43,8 @@ class Zookeeper
      *
      * @param string $address CSV list of host:port values (e.g. "host1:2181,host2:2181")
      */
-    public function __construct($address) {
+    public function __construct($address)
+    {
         $this->zookeeper = new ExtZookeeper($address);
     }
 
@@ -56,7 +57,8 @@ class Zookeeper
      *
      * @return mixed previous value if set, or null
      */
-    public function set($path, $value) {
+    public function set($path, $value)
+    {
         if (!$this->zookeeper->exists($path)) {
             $this->makePath($path);
             $this->makeNode($path, $value);
@@ -73,7 +75,8 @@ class Zookeeper
      *
      * @return bool
      */
-    public function makePath($path, $value = '') {
+    public function makePath($path, $value = '')
+    {
         $parts = explode('/', $path);
         $parts = array_filter($parts);
         $subpath = '';
@@ -95,7 +98,8 @@ class Zookeeper
      *
      * @return string the path to the newly created node or null on failure
      */
-    public function makeNode($path, $value, array $params = array()) {
+    public function makeNode($path, $value, array $params = array())
+    {
         if (empty($params)) {
             $params = array(
                 array(
@@ -105,6 +109,7 @@ class Zookeeper
                 )
             );
         }
+
         return $this->zookeeper->create($path, $value, $params);
     }
 
@@ -115,10 +120,12 @@ class Zookeeper
      *
      * @return string|null
      */
-    public function get($path) {
+    public function get($path)
+    {
         if (!$this->zookeeper->exists($path)) {
             return null;
         }
+
         return $this->zookeeper->get($path);
     }
 
@@ -130,11 +137,48 @@ class Zookeeper
      *
      * @return array the subpaths within the given node
      */
-    public function getChildren($path) {
+    public function getChildren($path)
+    {
         if (strlen($path) > 1 && preg_match('@/$@', $path)) {
             // remove trailing /
             $path = substr($path, 0, -1);
         }
+
         return $this->zookeeper->getChildren($path);
+    }
+
+    /**
+     * Get the value of the first child at a given path.
+     *
+     * @param string $path
+     * @param mixed  $or
+     *
+     * @return mixed Value of first child if successful. $or otherwise
+     */
+    public function getChildrenOr($path, $or)
+    {
+        if (!$this->zookeeper->exists($path)) {
+            return $or;
+        }
+
+        return $this->getChildren($path);
+    }
+
+    /**
+     * Deletes the node.
+     *
+     * @param string $path
+     *
+     * @return boolean
+     */
+    public function delete($path)
+    {
+        if (!$this->zookeeper->exists($path)) {
+            return false;
+        }
+
+        $this->zookeeper->delete($path);
+
+        return true;
     }
 }

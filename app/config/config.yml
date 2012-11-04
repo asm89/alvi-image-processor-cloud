@@ -26,9 +26,12 @@ old_sound_rabbit_mq:
         upload_picture:
             connection: default
             exchange_options: {name: 'upload-picture', type: direct}
-        scaler:
+        deployer:
             connection: default
-            exchange_options: {name: 'scaler', type: direct}
+            exchange_options: {name: 'deployer', type: direct}
+        deployer_callback:
+            connection: default
+            exchange_options: {name: 'deployer_callback', type: direct}
 
     consumers:
         upload_picture:
@@ -36,6 +39,16 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'upload-picture', type: direct}
             queue_options:    {name: 'upload-picture'}
             callback:         alvi.image_processor.worker
+        deployer:
+            connection: default
+            exchange_options: {name: 'deployer', type: direct}
+            queue_options:    {name: 'deployer'}
+            callback:         alvi.image_processor.provisioner.deployer.messaged.deploy
+        deployer_callback:
+            connection: default
+            exchange_options: {name: 'deployer_callback', type: direct}
+            queue_options:    {name: 'deployer_callback'}
+            callback:         alvi.image_processor.provisioner.deployer.messaged.callback
 
 beberlei_metrics:
     default: statsd

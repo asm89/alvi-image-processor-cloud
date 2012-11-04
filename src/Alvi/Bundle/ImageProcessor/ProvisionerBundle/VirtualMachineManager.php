@@ -19,48 +19,132 @@ use Alvi\Bundle\ImageProcessor\ZookeeperBundle\Zookeeper;
  */
 class VirtualMachineManager
 {
-    public function __construct(ProvisionerInterface $provisioner, Zookeeper $zookeeper)
+    private $deployer;
+
+    /**
+     * @param DeployerInterface $deployer
+     * @param Zookeeper         $zookeeper
+     */
+    public function __construct(DeployerInterface $deployer, Zookeeper $zookeeper)
     {
-        $this->provisioner = $provisioner;
-        $this->zookeeper   = $zookeeper;
+        $this->deployer  = $deployer;
+        $this->zookeeper = $zookeeper;
     }
 
-    public function getRunning($type)
+    /**
+     * @param string $type
+     *
+     * @return integer
+     */
+    public function getRunningCount($type)
     {
         return $this->getNumberByType($type, '/nodes/running');
     }
 
-    public function getSpinningUp($type)
+    /**
+     * @param string $type
+     *
+     * @return integer
+     */
+    public function getSpinningUpCount($type)
     {
         return $this->getNumberByType($type, '/nodes/spinningup');
     }
 
-    public function getSpinningDown($type)
+    /**
+     * @param string $type
+     *
+     * @return integer
+     */
+    public function getSpinningDownCount($type)
     {
         return $this->getNumberByType($type, '/nodes/spinningdown');
     }
 
+    /**
+     * @param string $type
+     * @param path   $path Path in zookeeper containing the VM nodes
+     *
+     * @return integer
+     */
     private function getNumberByType($type, $path)
     {
-        if (null === $this->zookeeper->get($path)) {
-            return 0;
-        }
-
-        $children = $this->zookeeper->getChildren($path);
+        $children = $this->getByType($type);
 
         return array_reduce($children,
-            function($total, $child) use ($type) { return $total + (false !== strpos($child, $type) ? 1 : 0); },
+            function($total, $child) { return $total + 1; },
             0
         );
     }
 
-    public function start($type)
+    /**
+     * @param string $type
+     * @param path   $path Path in zookeeper containing the VM nodes
+     *
+     * @return array
+     */
+    private function getByType($type, $path)
     {
-        // message deployer
+        if (null === $this->zookeeper->get($path)) {
+            return array();
+        }
+
+        $children = $this->zookeeper->getChildren($path);
+
+        return array_filter($children, function($child) use ($type) { return false !== strpos($child, $type); });
     }
 
+    /**
+     * @param VirtualMachine $vm
+     * @param string         $state
+     */
+    public function setMachineState(VirtualMachine $vm, $state)
+    {
+        if (null !== $vm->getState()) {
+            $path = $this->createStatePath($vm->getState(), $vm->getFqdn());
+            $this->zookeeper->delete($path);
+        }
+
+        $vm->setState($state);
+
+        $path = $this->createStatePath($vm->getState(), $vm->getFqdn());
+        $this->zookeeper->set($path, serialize($vm));
+    }
+
+    /**
+     * @param string $state
+     * @param string $fqdn
+     *
+     * @return string
+     */
+    private function createStatePath($state, $fqdn)
+    {
+        return sprintf('/nodes/%s/%s', $state, $fqdn);
+    }
+
+    /**
+     * @param string $type
+     */
+    public function start($type)
+    {
+        $this->deployer->provision($type);
+    }
+
+    /**
+     * @param string $type
+     */
     public function stop($type)
     {
-        // message deployer
+        $vms = $this->getByType('worker', '/nodes/running');
+
+        if (!count($vms)) {
+            // todo: log?
+            // nothing to stop
+            return;
+        }
+
+        $vm = unserialize($this->zookeeper->get('/nodes/running/' . current($vms)));
+
+        $this->deployer->destroy($vm);
     }
 }

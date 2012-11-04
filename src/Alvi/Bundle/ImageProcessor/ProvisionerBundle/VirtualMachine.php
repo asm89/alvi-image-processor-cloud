@@ -12,6 +12,13 @@ class VirtualMachine
     private $configuration;
     private $fqdn;
     private $ip;
+    private $state;
+
+    const STATE_DESTROYED    = 'destroyed';
+    const STATE_FAILED       = 'failed';
+    const STATE_RUNNING      = 'running';
+    const STATE_SPINNINGDOWN = 'spinningup';
+    const STATE_SPINNINGUP   = 'spinningdown';
 
     /**
      * Constructor.
@@ -51,5 +58,15 @@ class VirtualMachine
     public function isBooted()
     {
         return null !== $this->ip && null !== $this->fqdn;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 }

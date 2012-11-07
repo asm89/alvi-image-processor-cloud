@@ -41,11 +41,17 @@ class RabbitMQAPI
     /**
      * execute a command on the RabbitMQ REST API
      * @param $command
+     * return array or false
      */
      public function executeApiCall($command) {
-         $rabbitMQjsonResponse = file_get_contents($this->getRabbitMQUrl().$command, false, $this->getRabbitMQContext());
-         $responsArray = json_decode($rabbitMQjsonResponse, true);
-         return $responsArray;
+         $rabbitMQjsonResponse = @file_get_contents($this->getRabbitMQUrl().$command, false, $this->getRabbitMQContext());
+         if($rabbitMQjsonResponse == false) {
+             return false;
+         }
+         else {
+             $responsArray = json_decode($rabbitMQjsonResponse, true);
+             return $responsArray;
+         }
      }
 }    
 ?>

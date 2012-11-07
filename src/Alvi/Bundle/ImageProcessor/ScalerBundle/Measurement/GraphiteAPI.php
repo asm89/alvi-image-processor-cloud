@@ -32,8 +32,14 @@ class GraphiteAPI
      * @param graphiteCommand $command
      */
      public function getDataFromGraphiteCommand($command) {
-         $jsonRespons = json_decode(file_get_contents($this->renderUrl.$command));
-         return $jsonRespons;
+        try {
+            $jsonRespons = json_decode(file_get_contents($this->renderUrl.$command));
+        }
+        catch(Exception $e) {
+            //command or server not found
+            $jsonRespons = false;
+        }
+        return $jsonRespons;
      }
 }    
 ?>

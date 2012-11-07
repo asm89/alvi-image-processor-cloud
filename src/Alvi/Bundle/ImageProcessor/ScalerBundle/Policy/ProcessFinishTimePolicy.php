@@ -35,7 +35,12 @@ class ProcessFinishTimePolicy
         
         $averageFinishTime = $this->processFinishTimeMeasurement->getMovingAverageFinishTime();
         $averageProcessTime = $this->processFinishTimeMeasurement->getMovingAverageProcessTime();
-
+        
+        //if no workers are up, spin one up
+        if(($this->virtualMachineManager->getSpinningUpCount("worker")+ $this->virtualMachineManager->getRunningCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) < 1) {
+            $this->virtualMachineManager->start("worker");
+        }
+        
         //if no data is available do nothing
         if($averageFinishTime == false || $averageFinishTime == false) {
             //do nothing
@@ -44,15 +49,16 @@ class ProcessFinishTimePolicy
             //if the finish time is more than 5 times the process time scale up
             if ($averageFinishTime/$averageProcessTime > $this->parameters['spinupratio']) {
                 //scale up
-                if($this->virtualMachineManager->getSpinningUpCount("worker") < $this->parameters['spinupcap']) {
+                if(($this->virtualMachineManager->getSpinningUpCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) < $this->parameters['spinupcap']) {
                     $this->virtualMachineManager->start("worker");
                 }
             }
-            //if the finish time is less than 2 times the process time scale down
-            elseif ($averageFinishTime/$averageProcessTime < $this->parameters['spindownratio']) {
+            //if the finish time is less than 2 times the process time and there are more than 1 workers scale down
+            elseif ($averageFinishTime/$averageProcessTime < $this->parameters['spindownratio']  && ($this->virtualMachineManager->getSpinningUpCount("worker")+ $this->virtualMachineManager->getRunningCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) > 1) {
                 //scale down
                 if($this->virtualMachineManager->getSpinningDownCount("worker") < $this->parameters['spindowncap']) {
                     $this->virtualMachineManager->stop("worker");
+                    sleep(60);
                 }
             }
         }

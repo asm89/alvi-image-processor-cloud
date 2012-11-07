@@ -1,0 +1,15 @@
+lokaal
+php app/console rabbitmq:consumer deployer
+
+starten op master
+
+/data/app/console rabbitmq:consumer deployer_callback
+/data/app/console alvi:image-processor:daemon:queueSize
+
+/data/app/console alvi:image-processor:scaler --scalerpolicy queuesize
+
+
+/data/app/console alvi:image-processor:jobSubmit --workloadFilepath /data/normalWorkload.log --openWorkload true
+
+/data/app/console alvi:image-processor:jobSubmit --workloadFilepath /data/burstWorkload.log --openWorkload true
+

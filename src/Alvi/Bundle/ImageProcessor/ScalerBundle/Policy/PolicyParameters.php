@@ -24,10 +24,10 @@ class PolicyParameters
                                                                     "spinupcap"             => 3,  //number of workers that can spin up at the same time
                                                                     "spindowncap"           => 3);  //number of workers that can spin down at the same time
         //paramters for queue size policy
-        $this->policyParameters['queuesizepolicy'] = array(         "spinupqueuesize"       => 100, // number of items in queue
-                                                                    "spindownqueuesize"     => 20,  // number of items in queue
-                                                                    "spinupcap"             => 3,  //number of workers that can spin up at the same time
-                                                                    "spindowncap"           => 3);  //number of workers that can spin down at the same time
+        $this->policyParameters['queuesizepolicy'] = array(         "spinupqueuesize"       => 20, // number of items in queue
+                                                                    "spindownqueuesize"     => 5,  // number of items in queue
+                                                                    "spinupcap"             => 1,  //number of workers that can spin up at the same time
+                                                                    "spindowncap"           => 1);  //number of workers that can spin down at the same time
     }
 
     /**

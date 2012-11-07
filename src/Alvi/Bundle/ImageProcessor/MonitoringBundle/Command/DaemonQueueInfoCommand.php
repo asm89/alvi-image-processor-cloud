@@ -43,22 +43,26 @@ EOT
         
         while(true) {
             $rabbitMQqueueData = $RabbitMQAPI->executeApiCall("queues/%2f/upload-picture");
-            
-            $collector->timing('alvi.queue.size.upload-picture.',$rabbitMQqueueData['messages_ready']);
-            if(isset($rabbitMQqueueData['incoming']['stats']['publish_details']['rate'])) {
-                $collector->timing('alvi.queue.incomming_rate.upload-picture',$rabbitMQqueueData['incoming']['stats']['publish_details']['rate']);
+            if($rabbitMQqueueData == false) {
+                //something went wrong with the api command
             }
-            else{
-                $collector->timing('alvi.queue.incomming_rate.upload-picture',0);
+            else {
+                $collector->timing('alvi.queue.size.upload-picture.',$rabbitMQqueueData['messages']);
+                if(isset($rabbitMQqueueData['incoming']['stats']['publish_details']['rate'])) {
+                    $collector->timing('alvi.queue.incomming_rate.upload-picture',$rabbitMQqueueData['incoming']['stats']['publish_details']['rate']);
+                }
+                else{
+                    $collector->timing('alvi.queue.incomming_rate.upload-picture',0);
+                }
+                if(isset($rabbitMQqueueData['deliveries']['stats']['publish_details']['rate'])) {
+                    $collector->timing('alvi.queue.delivery_rate.upload-picture',$rabbitMQqueueData['deliveries']['stats']['publish_details']['rate']);
+                }
+                else{
+                    $collector->timing('alvi.queue.delivery_rate.upload-picture',0);
+                }
+                //send stats to graphite
+                $collector->flush();
             }
-            if(isset($rabbitMQqueueData['deliveries']['stats']['publish_details']['rate'])) {
-                $collector->timing('alvi.queue.delivery_rate.upload-picture',$rabbitMQqueueData['deliveries']['stats']['publish_details']['rate']);
-            }
-            else{
-                $collector->timing('alvi.queue.delivery_rate.upload-picture',0);
-            }
-            //send stats to graphite
-            $collector->flush();
             sleep(1);
         }
     }

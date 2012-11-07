@@ -9,5 +9,5 @@ respawn
 
 script
     cd <%= alvi_dir %>
-    su -c "/usr/bin/php <%= alvi_dir %>/app/console rabbitmq:consumer -m 1 upload_picture" vagrant
+    su -c "/usr/bin/php <%= alvi_dir %>/app/console rabbitmq:consumer upload_picture" vagrant
 end script

@@ -26,7 +26,7 @@ class QueueMeasurement
     public function getMovingAverageQueueSize() {
         $commandQueueSize = "?target=movingAverage(stats.timers.alvi.queue.size.upload-picture.mean,10)&format=json&from=-1minutes";
         $averageQueueSizeJsonData = $this->graphiteAPI->getDataFromGraphiteCommand($commandQueueSize);
-        if(isset($averageQueueSizeJsonData[0]) && $averageQueueSizeJsonData[0]->datapoints) {
+        if(isset($averageQueueSizeJsonData[0]) && isset($averageQueueSizeJsonData[0]->datapoints)) {
             $averageQueueSize = $this->calculateMovingAverage($averageQueueSizeJsonData[0]->datapoints);   
         }
         else {
@@ -44,7 +44,7 @@ class QueueMeasurement
         $total = 0;
         $i = 0;
         foreach ($data as $item) {
-            if (isset($item[0]) && $item[0] != "") {
+            if(isset($item[0]) && ($item[0] == '0' || $item[0] >= 1)){
                 $total += $item[0];
                 $i++;
             }

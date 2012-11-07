@@ -39,6 +39,7 @@ EOT
         $collector = $container->get('beberlei_metrics.collector.statsd');
         while(true) {
             $collector->increment('alvi.heartbeat.'.gethostname());
+            $collector->increment('alvi.heartbeat.all');
             //send stats to graphite
             $collector->flush();
             sleep(1);

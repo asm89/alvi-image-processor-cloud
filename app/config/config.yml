@@ -26,7 +26,7 @@ old_sound_rabbit_mq:
         upload_picture:
             connection: default
             exchange_options: {name: 'upload-picture', type: direct}
-            queue_options:    {name: 'deployer'}
+            queue_options:    {name: 'upload-picture'}
         deployer:
             connection: default
             exchange_options: {name: 'deployer', type: direct}

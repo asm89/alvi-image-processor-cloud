@@ -24,7 +24,7 @@ class ProcessFinishTimeMeasurement
      * return int average if their are measurements other wise return false
      */
     public function getMovingAverageFinishTime() {
-        $commandFinishTime = "?target=movingAverage(stats.timers.alvi.jobs_finish_time.mean,10)&format=json&from=-1minutes";
+        $commandFinishTime = "?target=movingAverage(stats.timers.alvi.jobs_finish_time.mean,100)&format=json&from=-5minutes";
         $averageFinishTimeJsonData = $this->graphiteAPI->getDataFromGraphiteCommand($commandFinishTime);
         if(isset($averageFinishTimeJsonData[0]) && $averageFinishTimeJsonData[0]->datapoints) {
             $averageFinishTime = $this->calculateMovingAverageTime($averageFinishTimeJsonData[0]->datapoints);   
@@ -39,7 +39,7 @@ class ProcessFinishTimeMeasurement
      * return int average if their are measurements other wise return false
      */
     public function getMovingAverageProcessTime() {
-        $commandProcessTime = "?target=movingAverage(stats.timers.alvi.jobs_process_time.mean,10)&format=json&from=-1minutes";
+        $commandProcessTime = "?target=movingAverage(stats.timers.alvi.jobs_process_time.mean,100)&format=json&from=-5minutes";
         $averageProcessTimeJsonData = $this->graphiteAPI->getDataFromGraphiteCommand($commandProcessTime);
         if(isset($averageProcessTimeJsonData[0]) && isset($averageProcessTimeJsonData[0]->datapoints)) {
             $averageProcessTime = $this->calculateMovingAverageTime($averageProcessTimeJsonData[0]->datapoints);

@@ -4,6 +4,7 @@ include graphite
 include zookeeper
 include phpzookeeper
 include phpstats
+include alvi::queuestats
 
 class { 'apt':
   always_apt_update => false

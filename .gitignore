@@ -31,3 +31,5 @@ app/virtual-machines/worker/008/Vagrantfile
 app/virtual-machines/worker/009/.vagrant
 
 app/virtual-machines/worker/009/Vagrantfile
+
+app/virtual-machines/worker/010/Vagrantfile

@@ -24,22 +24,46 @@ class QueueMeasurement
      * returns int, the moving average of the queue size of the last minute
      */
     public function getMovingAverageQueueSize() {
-        $commandQueueSize = "?target=movingAverage(stats.timers.alvi.queue.size.upload-picture.mean,10)&format=json&from=-1minutes";
-        $averageQueueSizeJsonData = $this->graphiteAPI->getDataFromGraphiteCommand($commandQueueSize);
-        if(isset($averageQueueSizeJsonData[0]) && isset($averageQueueSizeJsonData[0]->datapoints)) {
-            $averageQueueSize = $this->calculateMovingAverage($averageQueueSizeJsonData[0]->datapoints);   
+        $commandQueueSize = "?target=movingAverage(stats.timers.alvi.queue.size.upload-picture.mean,100)&format=json&from=-5minutes";
+        return $this->executeAverageCommand($command);
+    }
+    
+    /**
+     * returns int, the incoming job rate
+     */
+    public function getMovingAverageIncomingJobRate() {
+        $command = "?target=movingAverage(stats.timers.alvi.queue.incomming_rate.upload-picture.mean,100)&format=json&from=-5minutes";
+        return $this->executeAverageCommand($command);
+    }
+    
+    /**
+     * returns int, the consuming job rate
+     */
+    public function getMovingAverageConsumingJobRate() {
+        $command = "?target=movingAverage(stats.timers.alvi.queue.delivery_rate.upload-picture.mean,100)&format=json&from=-5minutes";
+        return $this->executeAverageCommand($command);
+    }
+    
+    /**
+     * @param String $command (Graphite rest API command)
+     * return int moving 
+     */
+    private function executeAverageCommand($command) {
+        $averageJsonData = $this->graphiteAPI->getDataFromGraphiteCommand($command);
+        if(isset($averageJsonData[0]) && isset($averageJsonData[0]->datapoints)) {
+            $average = $this->calculateAverage($averageJsonData[0]->datapoints);   
         }
         else {
             return false;
         }
-        return $averageQueueSize;
+        return $average;
     }
     
     /**
      * @param datapoints array $data
      * return int average if more than 0 measurements other wise return false
      */
-    private function calculateMovingAverage($data) {
+    private function calculateAverage($data) {
         //calculate the average finish time
         $total = 0;
         $i = 0;

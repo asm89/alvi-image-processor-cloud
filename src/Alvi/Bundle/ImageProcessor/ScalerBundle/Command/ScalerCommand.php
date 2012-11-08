@@ -22,7 +22,7 @@ class ScalerCommand extends ContainerAwareCommand
             ->setName('alvi:image-processor:scaler')
             ->setDescription('Start and stop VM\'s.')
             ->setDefinition(array(
-                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: time, constantsize, queuesize", "time")
+                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: time, constantsize, queuesize, queuerate", "time")
                 ))
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command will scale the workers in the cloud.
@@ -43,6 +43,9 @@ EOT
             break;
             case 'queuesize':
                 $policy = $container->get('alvi.image_processor.scaler.policy.QueueSizePolicy');
+            break;
+            case 'queuerate':
+                $policy = $container->get('alvi.image_processor.scaler.policy.QueueRatePolicy');
             break;
             default:
                 $policy = $container->get('alvi.image_processor.scaler.policy.processfinishtimepolicy');

@@ -21,6 +21,12 @@
                    <argument type="service" id="alvi.image_processor.scaler.policy.QueueMeasurement" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
                </service>
+
+               <service id="alvi.image_processor.scaler.policy.pwn_policy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\PwnPolicy">
+                   <argument type="service" id="alvi.image_processor.scaler.policy.QueueMeasurement" />
+                   <argument type="service" id="alvi.image_processor.provisioner.manager" />
+               </service>
+
                <service id="alvi.image_processor.scaler.policy.constantsizepolicy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\ConstantSizePolicy">
                    <argument type="service" id="alvi.image_processor.scaler.policy.PolicyParameters" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
@@ -30,6 +36,7 @@
                </service>
                <service id="alvi.image_processor.scaler.policy.QueueMeasurement" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Measurement\QueueMeasurement">
                    <argument type="service" id="alvi.image_processor.scaler.policy.GraphiteAPI" />
+                   <argument type="service" id="alvi.image_processor.scaler.policy.rabbitmqapi" />
                </service>
                <service id="alvi.image_processor.scaler.policy.GraphiteAPI" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Measurement\GraphiteAPI">
                </service>

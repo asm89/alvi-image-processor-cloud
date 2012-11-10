@@ -22,7 +22,8 @@ class ScalerCommand extends ContainerAwareCommand
             ->setName('alvi:image-processor:scaler')
             ->setDescription('Start and stop VM\'s.')
             ->setDefinition(array(
-                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: time, constantsize, queuesize, queuerate", "time")
+                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: time, constantsize, queuesize, queuerate", "pwn")
+                new InputOption('decisionInterval', 'dI', InputOption::VALUE_OPTIONAL, "The interval between policy decisions", 1)
                 ))
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command will scale the workers in the cloud.
@@ -33,6 +34,8 @@ EOT
         }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $decisionInterval = $input->getOption('decisionInterval');
+
         $container = $this->getContainer();
         switch ($input->getOption('scalerpolicy')) {
             case 'time':
@@ -47,16 +50,17 @@ EOT
             case 'queuerate':
                 $policy = $container->get('alvi.image_processor.scaler.policy.QueueRatePolicy');
             break;
+            case 'pwn':
+                $policy = $container->get('alvi.image_processor.scaler.policy.pwn_policy');
+            break;
             default:
                 $policy = $container->get('alvi.image_processor.scaler.policy.processfinishtimepolicy');
         }
-        
 
         while (true) {
-            //choose a policy
             $policy->policyDecision();
-            //wait 10 seconds and rescale the system.
-            sleep(10);
+
+            sleep($decisionInterval);
         }
     }
 }

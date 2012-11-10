@@ -11,13 +11,15 @@ class QueueMeasurement
 {
 
     private $graphiteAPI;
+    private $rabbitMq;
     
     /**
      * @param graphiteAPI $api
      */
-    public function __construct(GraphiteAPI $api)
+    public function __construct(GraphiteAPI $api, RabbitMQAPI $rabbitMq)
     {
         $this->graphiteAPI = $api;
+        $this->rabbitMq = $rabbitMq;
     }
     
     /**
@@ -26,6 +28,20 @@ class QueueMeasurement
     public function getMovingAverageQueueSize() {
         $command = "?target=movingAverage(stats.timers.alvi.queue.size.upload-picture.mean,100)&format=json&from=-5minutes";
         return $this->executeAverageCommand($command);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getQueueSize()
+    {
+        $data = $this->rabbitMq->executeApiCall("queues/%2f/upload-picture");
+
+        if (false === $data) {
+            return false;
+        }
+
+        return (int) $data['messages']);
     }
     
     /**

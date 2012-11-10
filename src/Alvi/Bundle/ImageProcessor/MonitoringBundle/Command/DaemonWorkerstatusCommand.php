@@ -47,7 +47,7 @@ EOT
             $workers = $virtualMachineManager->getRunningVirtualMachinesByType('worker');
             foreach($workers as $worker) {
                 $command = "?target=movingAverage(stats.timers.alvi.queue.stats.alvi.heartbeat.".$worker->getFqdn().",10)&format=json&from=-1minutes";
-                $heartbeat = $this->executeAverageCommand($command);
+                $heartbeat = @$this->executeAverageCommand($command);
                 //if hearbeat is false, graphite could not be reached.
                 if($heartbeat !== false && $heartbeat < 0.8) {
                     $virtualMachineManager->setMachineState($worker, VirtualMachine::STATE_FAILED);

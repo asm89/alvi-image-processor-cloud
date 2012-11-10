@@ -104,6 +104,19 @@ class VirtualMachineManager
         return array_filter($children, function($child) use ($type) { return false !== strpos($child, $type); });
     }
 
+
+    /**
+     * @param string $type
+     *
+     * @return array
+     */
+    public function getRunningVirtualMachinesByType($type)
+    {
+        $vms = $this->getByType($type, '/nodes/running');
+
+        return array_map(function($vm) { return unserialize($vm); }, $vms);
+    }
+
     /**
      * @param VirtualMachine $vm
      * @param string         $state

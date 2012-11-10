@@ -21,8 +21,8 @@ class PolicyParameters
         //paramters for process/finish time policy
         $this->policyParameters['timepolicy'] = array(              "spinupratio"           => 5,   // finishtime/processtime
                                                                     "spindownratio"         => 2,   // finishtime/processtime
-                                                                    "spinupcap"             => 3,  //number of workers that can spin up at the same time
-                                                                    "spindowncap"           => 3);  //number of workers that can spin down at the same time
+                                                                    "spinupcap"             => 1,  //number of workers that can spin up at the same time
+                                                                    "spindowncap"           => 1);  //number of workers that can spin down at the same time
         //paramters for queue size policy
         $this->policyParameters['queuesizepolicy'] = array(         "spinupqueuesize"       => 20, // number of items in queue
                                                                     "spindownqueuesize"     => 5,  // number of items in queue

@@ -5,6 +5,8 @@ include zookeeper
 include phpzookeeper
 include phpstats
 include alvi::queuestats
+include alvi::provisionercallback
+include alvi::workerstatus
 
 class { 'apt':
   always_apt_update => false

@@ -1,6 +1,5 @@
 <html>
     <head>
-        <meta http-equiv="refresh" content="5" />
     </head>
     <body>
         <table rows="3" cols="2" width="100%">
@@ -33,6 +32,19 @@
                 <td><img src="http://172.16.1.23/render?from=-30minutes&until=now&width=600&height=300&_salt=1352042811.029&target=movingAverage(stats.alvi.heartbeat.workerstatus,100)&title=Heartbeat&_uniq=0.04039141070097685" /></td>
             </tr>
         </table>
+        <script type="text/javascript">
+            var j = 0;
+            function reloadImages() {
+                for (var i = 0; i < document.images.length; i++) {
+                    document.images[i].src = document.images[i].src + '&r' +j;
+                }
+
+                j++;
+                setTimeout(reloadImages, 1000);
+            }
+
+            onload = reloadImages;
+    </script>
     </body>
 </html>
         

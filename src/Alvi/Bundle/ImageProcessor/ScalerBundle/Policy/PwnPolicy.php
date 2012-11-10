@@ -54,7 +54,7 @@ class PwnPolicy
         }
 
         // no previous measurement, or queue to small to make a decision
-        if (null === $this->previousQueueSize) {
+        if (null === $this->previousQueueSize || 0 === $this->previousQueueSize) {
             $this->previousQueueSize = $queueSize;
 
             return;

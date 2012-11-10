@@ -5,6 +5,7 @@ namespace Alvi\Bundle\ImageProcessor\MonitoringBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachine;
 
 
 /**
@@ -41,7 +42,6 @@ EOT
         //Graphite api
         $this->graphiteAPI = $container->get('alvi.image_processor.scaler.policy.GraphiteAPI');
         $virtualMachineManager = $container->get('alvi.image_processor.provisioner.manager');
-        $zookeeper = $container->get('alvi.image_processor.zookeeper');
         while(true) {
             $workers = $virtualMachineManager->getRunningVirtualMachinesByType('worker');
             foreach($workers as $worker) {
@@ -49,13 +49,10 @@ EOT
                 $heartbeat = $this->executeAverageCommand($command);
                 //if hearbeat is false, graphite could not be reached.
                 if($heartbeat !== false && $heartbeat < 0.8) {
-                    //worker not runningn, remove from zookeeper
-                    //worker path in zookeeper
-                    $workerpath = '/nodes/running/'.$worker->getFqdn();
-                    $zookeeper->delete($workerpath);
+                    $virtualMachineManager->setMachineState($worker, VirtualMachine::STATE_FAILED);
                 }
             }
-            //check every 5 secconds is the workers are still running.
+            //check every 5 seconds is the workers are still running.
             sleep(5);
         }
     }

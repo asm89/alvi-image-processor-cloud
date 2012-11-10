@@ -24,7 +24,7 @@ class QueueMeasurement
      * returns int, the moving average of the queue size of the last minute
      */
     public function getMovingAverageQueueSize() {
-        $commandQueueSize = "?target=movingAverage(stats.timers.alvi.queue.size.upload-picture.mean,100)&format=json&from=-5minutes";
+        $command = "?target=movingAverage(stats.timers.alvi.queue.size.upload-picture.mean,100)&format=json&from=-5minutes";
         return $this->executeAverageCommand($command);
     }
     

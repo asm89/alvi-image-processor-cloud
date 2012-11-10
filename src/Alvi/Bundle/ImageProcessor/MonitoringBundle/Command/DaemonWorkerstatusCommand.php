@@ -42,6 +42,7 @@ EOT
         //Graphite api
         $this->graphiteAPI = $container->get('alvi.image_processor.scaler.policy.GraphiteAPI');
         $virtualMachineManager = $container->get('alvi.image_processor.provisioner.manager');
+        $statsd = $container->get('beberlei_metrics.collector.statsd');
         while(true) {
             $workers = $virtualMachineManager->getRunningVirtualMachinesByType('worker');
             foreach($workers as $worker) {
@@ -52,6 +53,9 @@ EOT
                     $virtualMachineManager->setMachineState($worker, VirtualMachine::STATE_FAILED);
                 }
             }
+            $statsd->increment('alvi.heartbeat.workerstatus');
+            //send stats to graphite
+            $statsd->flush();
             //check every 5 seconds is the workers are still running.
             sleep(5);
         }

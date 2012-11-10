@@ -64,7 +64,7 @@ EOT
                 //send stats to graphite
                 $collector->flush();
             }
-            sleep(1);
+            sleep(0.1);
         }
     }
 }

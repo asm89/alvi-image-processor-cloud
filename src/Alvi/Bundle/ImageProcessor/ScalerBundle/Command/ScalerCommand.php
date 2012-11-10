@@ -22,7 +22,7 @@ class ScalerCommand extends ContainerAwareCommand
             ->setName('alvi:image-processor:scaler')
             ->setDescription('Start and stop VM\'s.')
             ->setDefinition(array(
-                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: time, constantsize, queuesize, queuerate", "pwn")
+                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: time, constantsize, queuesize, queuerate", "pwn"),
                 new InputOption('decisionInterval', 'dI', InputOption::VALUE_OPTIONAL, "The interval between policy decisions", 1)
                 ))
             ->setHelp(<<<EOT

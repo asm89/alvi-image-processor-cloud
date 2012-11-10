@@ -3,7 +3,6 @@ include stdlib
 include graphite
 include zookeeper
 include phpzookeeper
-include phpstats
 include alvi::queuestats
 include alvi::provisionercallback
 include alvi::workerstatus

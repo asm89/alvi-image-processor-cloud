@@ -41,7 +41,7 @@ class QueueMeasurement
             return false;
         }
 
-        return (int) $data['messages']);
+        return (int) $data['messages'];
     }
     
     /**

@@ -54,13 +54,17 @@ class PwnPolicy
         }
 
         // no previous measurement, or queue to small to make a decision
-        if (null === $this->previousQueueSize || 0 === $this->previousQueueSize) {
+        if (null === $this->previousQueueSize) {
             $this->previousQueueSize = $queueSize;
 
             return;
         }
 
-        $ratio = $queueSize / $this->previousQueueSize;
+        if (0 === $queueSize || 0 === $this->previousQueueSize) {
+            $ratio = -1;
+        } else {
+            $ratio = $queueSize / $this->previousQueueSize;
+        }
 
         // queue size has grown 5% during the last interval
         if ($ratio >= 1.0 && $queueSize > 5) {

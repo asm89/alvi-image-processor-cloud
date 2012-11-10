@@ -9,7 +9,7 @@ class alvi::queuestats($alvi_dir = '/data') {
         owner   => root,
         group   => root,
         mode    => '0644',
-        require => File["${alvi_dir}/app/console"],
+        require => Service['zookeeper', 'rabbitmq-server'],
         content => template('alvi/alvi-queuestats.conf.erb'),
         notify  => Service["alvi-queuestats"];
     }

@@ -1,5 +1,4 @@
 include php
-include phpzookeeper
 include alvi::worker
 include alvi::heartbeat
 

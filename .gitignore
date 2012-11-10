@@ -6,6 +6,7 @@ build/
 vendor
 bin/*
 !bin/graphite-test.sh
+!bin/generate-workload.py
 composer.phar
 vagrant/.vagrant
 tags

@@ -6,7 +6,7 @@ starten op master
 /data/app/console alvi:image-processor:scaler --scalerpolicy queuesize
 
 
-/data/app/console alvi:image-processor:jobSubmit --workloadFilepath /data/normalWorkload.log --openWorkload true
+/data/app/console alvi:image-processor:jobSubmit /data/normalWorkload.log
 
-/data/app/console alvi:image-processor:jobSubmit --workloadFilepath /data/burstWorkload.log --openWorkload true
+/data/app/console alvi:image-processor:jobSubmit /data/burstWorkload.log
 

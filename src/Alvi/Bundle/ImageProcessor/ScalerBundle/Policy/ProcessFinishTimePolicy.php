@@ -37,7 +37,7 @@ class ProcessFinishTimePolicy
         $averageProcessTime = $this->processFinishTimeMeasurement->getMovingAverageProcessTime();
         
         //if no workers are up, spin one up
-        if(($this->virtualMachineManager->getSpinningUpCount("worker")+ $this->virtualMachineManager->getRunningCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) < 1) {
+        if(($this->virtualMachineManager->getSpinningUpCount("worker") + $this->virtualMachineManager->getRunningCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) < 1) {
             $this->virtualMachineManager->start("worker");
         }
         

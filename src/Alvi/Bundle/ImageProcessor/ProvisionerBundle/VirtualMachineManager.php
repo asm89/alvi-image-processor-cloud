@@ -113,8 +113,18 @@ class VirtualMachineManager
     public function getRunningVirtualMachinesByType($type)
     {
         $vms = $this->getByType($type, '/nodes/running');
-
-        return array_map(function($vm) { return unserialize($vm); }, $vms);
+        
+        $realVms = array();
+        
+        foreach ($vms as $vmName) {
+            $path = $this->createStatePath('running', $vmName);
+            
+            if (null !== $vm = $this->zookeeper->get($path)) {
+                $realVms[] = unserialize($vm);
+            }
+        }
+        
+        return $realVms;
     }
 
     /**

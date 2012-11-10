@@ -81,7 +81,9 @@ EOT
         if ('/' === $path) {
             return '/' . $sub;
         }
-
+        if('' === $sub) {
+            return $path;
+        }
         return $path . '/' . $sub;
     }
 

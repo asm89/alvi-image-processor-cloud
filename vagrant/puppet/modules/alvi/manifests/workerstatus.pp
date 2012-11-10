@@ -1,9 +1,5 @@
 class alvi::workerstatus($alvi_dir = '/data') {
     
-    file {"${alvi_dir}/app/console":
-        ensure => file
-    }
-    
     file {'/etc/init/alvi-workerstatus.conf':
         ensure  => file,
         owner   => root,

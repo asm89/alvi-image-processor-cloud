@@ -57,7 +57,7 @@ EOT
             //send stats to graphite
             $statsd->flush();
             //check every 5 seconds is the workers are still running.
-            sleep(5);
+            sleep(1);
         }
     }
     /**

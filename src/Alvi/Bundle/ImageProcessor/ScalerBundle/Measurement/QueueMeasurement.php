@@ -45,10 +45,37 @@ class QueueMeasurement
     }
     
     /**
+     * @return integer
+     */
+    public function getQueueIncomingRate()
+    {
+        $data = $this->rabbitMq->executeApiCall("queues/%2f/upload-picture");
+
+        if (false === $data) {
+            return false;
+        }
+
+        return (int) $data['incoming'][0]['stats']['publish_details']['rate'];
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getQueueOutgoingRate()
+    {
+        $data = $this->rabbitMq->executeApiCall("queues/%2f/upload-picture");
+        if (false === $data) {
+            return false;
+        }
+
+        return (int) $data['message_stats']['deliver_details']['rate'];
+    }
+    
+    /**
      * returns int, the incoming job rate
      */
     public function getMovingAverageIncomingJobRate() {
-        $command = "?target=movingAverage(stats.timers.alvi.queue.incomming_rate.upload-picture.mean,100)&format=json&from=-5minutes";
+        $command = "?target=movingAverage(stats.timers.alvi.queue.incoming_rate.upload-picture.mean,30)&format=json&from=-1minutes";
         return $this->executeAverageCommand($command);
     }
     
@@ -56,7 +83,7 @@ class QueueMeasurement
      * returns int, the consuming job rate
      */
     public function getMovingAverageConsumingJobRate() {
-        $command = "?target=movingAverage(stats.timers.alvi.queue.delivery_rate.upload-picture.mean,100)&format=json&from=-5minutes";
+        $command = "?target=movingAverage(stats.timers.alvi.queue.delivery_rate.upload-picture.mean,30)&format=json&from=-1minutes";
         return $this->executeAverageCommand($command);
     }
     

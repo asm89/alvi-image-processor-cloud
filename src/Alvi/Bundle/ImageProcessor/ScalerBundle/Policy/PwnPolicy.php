@@ -66,8 +66,8 @@ class PwnPolicy
             $ratio = $queueSize / $this->previousQueueSize;
         }
 
-        // queue size has grown 5% during the last interval
-        if ($ratio >= 1.0 && $queueSize > 5) {
+
+        if ($ratio >= 1.0 && $queueSize > 20) {
 
             // spin up only if we're not already spinning a worker up
             if($totalComing < 1) {

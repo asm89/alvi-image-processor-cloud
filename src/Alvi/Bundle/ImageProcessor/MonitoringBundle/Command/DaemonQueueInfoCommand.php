@@ -50,10 +50,10 @@ EOT
                 $collector->timing('alvi.queue.size.upload-picture.',$rabbitMQqueueData['messages']);
     
                 if(isset($rabbitMQqueueData['incoming'][0]['stats']['publish_details']['rate'])) {
-                    $collector->timing('alvi.queue.incomming_rate.upload-picture',$rabbitMQqueueData['incoming'][0]['stats']['publish_details']['rate']);
+                    $collector->timing('alvi.queue.incoming_rate.upload-picture',$rabbitMQqueueData['incoming'][0]['stats']['publish_details']['rate']);
                 }
                 else{
-                    $collector->timing('alvi.queue.incomming_rate.upload-picture',0);
+                    $collector->timing('alvi.queue.incoming_rate.upload-picture',0);
                 }
                 if(isset($rabbitMQqueueData['message_stats']['deliver_details']['rate'])) {
                     $collector->timing('alvi.queue.delivery_rate.upload-picture',$rabbitMQqueueData['message_stats']['deliver_details']['rate']);

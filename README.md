@@ -1,48 +1,113 @@
 alvi-image-processor-cloud
 ==========================
 
-Distributed image processing in the cloud.
+A proof of concept application for distributed image processing in the cloud.
+The application was created for the 2012 Cloud Computing course of the Delft
+University of Technology.
+
+> Note: all code found in this repository is highly experimental and in **prototype** shape.
+
+What is this?
+-------------
+This is an application used for evaluating the design of a cloud computing
+system for a course at the Delft University of Technology. It is able to
+autonomously start and stop virtual machines as the load of the system varies.
+It combines a Symfony2 PHP application together with:
+
+- [Apache ZooKeeper](http://zookeeper.apache.org/)
+- [Graphite](http://graphite.wikidot.com/)
+- [Puppet](http://puppetlabs.com/)
+- [RabbitMQ](http://www.rabbitmq.com/)
+- [Statsd](https://github.com/etsy/statsd)
+- [Vagrant](http://vagrantup.com)
+- [VirtualBox](https://www.virtualbox.org/)
+
+The high level overview of the system can be found below.
+
+![System design](doc/system-design.png)
+
+All in all the system does not actually process any images, instead it
+primarily keeps your CPU busy while drawing some graphs. The image processing
+is simulated by letting the workers of the system sleep for a certain amount of
+time. More information on the application can be found in the accompanying
+report: *link*.
+
+![Queuerate graph](doc/queuerate.png)
+
+
+What to do now?
+---------------
+If you enjoy the graph above you can go on and actually setup the system
+(recommended ;) ) with the instructions below. An alternative would be watching a
+video of our primary runs: https://vimeo.com/53266455.
+
 
 Installation
 ------------
 
+In order to run the system [Vagrant](http://vagrantup.com/) and PHP have to be
+installed on the host computer.
+
 > All console commands are assumed to be run from the root level of the project.
 
-Application installation. Using composer:
+The dependencies of the application can be installing using composer:
 
 ```bash
 $ curl https://getcomposer.org/installer | php
 $ composer.phar install --dev
 ```
 
-
 Running
 -------
 
-Start an initial "master" node.
+Although most of the application is automated, there are a few steps to perform
+in order to run the application.
+
+# 1) Start an initial "master" node.
+
+Run the following command and get some coffee or watch puppet deploy the master
+node stack.
 
 ```bash
 $ cd vagrant
 /vagrant $ vagrant up
 ```
 
-Start a "deployer" process on the host machine. This process will consume
-command messages to start and stop virtual machines.
+# 2) Start a "deployer" process on the host machine
+The deployer process will consume command messages to start and stop virtual
+machines.
 
 ```bash
 $ app/console rabbitmq:consumer deployer
 ```
 
-On the master node start submitting jobs:
+# 3) Start a "scaler" policy on the master node
+
 ```bash
 $ cd vagrant
 /vagrant $ vagrant ssh
 # now you're in the VM, /data contains the app
-$ cd /data
-/data $ app/console alvi:image-processor:jobSubmit
+vagrant@master $ /data/app/console alvi:image-processor:scaler --scalerpolicy queuesize
 ```
 
-Start job submit from a previous recorded file
+Now you have to wait until the worker comes up. You can do this by checking out
+the graphs page (see below) or looking at the VirtualBox gui.
+
+# 4) Finally start a benchmark
+
 ```bash
-/data $ app/console alvi:image-processor:jobSubmit --workloadFilepath /data/normalWorkload.log --openWorkload true
+$ cd vagrant
+/vagrant $ vagrant ssh
+# now you're in the VM, /data contains the app
+vagrant@master $ /data/app/console alvi:image-processor:jobSubmit /data/burstWorkload.log
 ```
+
+# Cleaning up
+
+When you are done with playing with the system, open the VirtualBox gui to
+remove all created virtual machines that were not already destroyed.
+
+# Others
+
+Checkout the `/data/app/console` command for other possible commands such as
+inspecting the contents of zookeeper.

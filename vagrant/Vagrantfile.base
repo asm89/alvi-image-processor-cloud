@@ -6,7 +6,7 @@ Vagrant::Config.run do |config|
   ## Ubuntu 12.04 LTS (64-bit)
   # custom ubuntu box with puppet 2.7.19
   config.vm.box = "alvi-ubuntu-server-12.04"
-  config.vm.box_url = "alvi-ubuntu-server-12.04.box"
+  config.vm.box_url = "https://github.com/downloads/asm89/alvi-image-processor-cloud/alvi-ubuntu-server-12.04.box"
 
   # network
   config.vm.network :hostonly, :dhcp, :ip => "172.16.1.1", :netmask => "255.255.0.0"
@@ -18,7 +18,7 @@ Vagrant::Config.run do |config|
   config.vm.share_folder "data", "/data", "../../../../"
 
   # Update deps
-  # config.vm.provision :shell, :inline => "apt-get update --fix-missing"
+  config.vm.provision :shell, :inline => "apt-get update --fix-missing"
 
   # set the hostname
   config.vm.host_name = "%vm_fqdn%"

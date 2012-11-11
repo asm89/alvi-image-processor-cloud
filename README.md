@@ -30,7 +30,7 @@ All in all the system does not actually process any images, instead it
 primarily keeps your CPU busy while drawing some graphs. The image processing
 is simulated by letting the workers of the system sleep for a certain amount of
 time. More information on the application can be found in the accompanying
-report: *link*.
+[*report*](https://github.com/downloads/asm89/alvi-image-processor-cloud/report.pdf).
 
 ![Queuerate graph](https://github.com/asm89/alvi-image-processor-cloud/raw/master/doc/queuerate.png)
 

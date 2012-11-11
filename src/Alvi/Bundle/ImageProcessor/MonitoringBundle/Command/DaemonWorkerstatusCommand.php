@@ -51,6 +51,7 @@ EOT
                 //if hearbeat is false, graphite could not be reached.
                 if($heartbeat !== false && $heartbeat < 0.8) {
                     $virtualMachineManager->setMachineState($worker, VirtualMachine::STATE_FAILED);
+                    $virtualMachineManager->start('worker');
                 }
             }
             $statsd->increment('alvi.heartbeat.workerstatus');

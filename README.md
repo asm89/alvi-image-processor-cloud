@@ -102,6 +102,11 @@ $ cd vagrant
 vagrant@master $ /data/app/console alvi:image-processor:jobSubmit /data/burstWorkload.log
 ```
 
+# 5) Watch some graphs!
+
+Open the `graphs.html` file in the `doc` directory in your browser and watch
+the graphs as the system scales up and down.
+
 # Cleaning up
 
 When you are done with playing with the system, open the VirtualBox gui to

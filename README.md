@@ -24,7 +24,7 @@ It combines a Symfony2 PHP application together with:
 
 The high level overview of the system can be found below.
 
-![System design](https://raw.github.com/asm89/alvi-image-processor-cloud/master/doc/system-design.png)
+![System design](https://github.com/asm89/alvi-image-processor-cloud/raw/master/doc/system-design.png)
 
 All in all the system does not actually process any images, instead it
 primarily keeps your CPU busy while drawing some graphs. The image processing
@@ -32,7 +32,7 @@ is simulated by letting the workers of the system sleep for a certain amount of
 time. More information on the application can be found in the accompanying
 report: *link*.
 
-![Queuerate graph](https://raw.github.com/asm89/alvi-image-processor-cloud/master/doc/queuerate.png)
+![Queuerate graph](https://github.com/asm89/alvi-image-processor-cloud/raw/master/doc/queuerate.png)
 
 
 What to do now?

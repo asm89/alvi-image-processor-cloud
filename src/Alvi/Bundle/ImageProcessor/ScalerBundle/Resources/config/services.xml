@@ -11,7 +11,7 @@
                    <argument type="service" id="alvi.image_processor.scaler.policy.ProcessFinishTimeMeasurement" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
                </service>
-               <service id="alvi.image_processor.scaler.policy.QueueSizePolicy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\QueueSizePolicy">
+               <service id="alvi.image_processor.scaler.policy.MovingAverageQueueSizePolicy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\MovingAverageQueueSizePolicy">
                    <argument type="service" id="alvi.image_processor.scaler.policy.PolicyParameters" />
                    <argument type="service" id="alvi.image_processor.scaler.policy.QueueMeasurement" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
@@ -22,7 +22,7 @@
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
                </service>
 
-               <service id="alvi.image_processor.scaler.policy.pwn_policy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\PwnPolicy">
+               <service id="alvi.image_processor.scaler.policy.queue_size_policy" class="Alvi\Bundle\ImageProcessor\ScalerBundle\Policy\QueueSizePolicy">
                    <argument type="service" id="alvi.image_processor.scaler.policy.QueueMeasurement" />
                    <argument type="service" id="alvi.image_processor.provisioner.manager" />
                </service>

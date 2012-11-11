@@ -12,57 +12,80 @@ use Alvi\Bundle\ImageProcessor\ProvisionerBundle\VirtualMachineManager;
  */
 class QueueSizePolicy
 {
-    
     private $queueMeasurement;
     private $virtualMachineManager;
-    private $parameters;
-    
+
+    private $previousQueueSize;
+
     /**
      * @param ProcessFinishTimeMeasurement $pftm
      * @param VirtualMachineManager $vmm
      */
-    public function __construct(PolicyParameters $pp, QueueMeasurement $qm, VirtualMachineManager $vmm)
+    public function __construct(QueueMeasurement $qm, VirtualMachineManager $vmm)
     {
-        $this->parameters = $pp->getParameters('queuesizepolicy');
         $this->queueMeasurement = $qm;
         $this->virtualMachineManager = $vmm;
     }
 
     /**
-     * tell the provisioner manager to scale up or down. 
+     * tell the provisioner manager to scale up or down.
      */
-    public function policyDecision() {
-        
-        $queueSize = $this->queueMeasurement->getMovingAverageQueueSize();
-        
-        
-        //if no workers are up, spin one up
-        if(($this->virtualMachineManager->getSpinningUpCount("worker")+ $this->virtualMachineManager->getRunningCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) < 1) {
+    public function policyDecision() 
+    {
+        $spinupCount = $this->virtualMachineManager->getSpinningUpCount("worker");
+        $preparingCount = $this->virtualMachineManager->getPreparingCount("worker");
+        $runningCount = $this->virtualMachineManager->getRunningCount("worker");
+        $spindownCount = $this->virtualMachineManager->getSpinningDownCount("worker");
+
+        $totalComing = $spinupCount + $preparingCount;
+        $total = $spinupCount + $preparingCount + $runningCount;
+
+        if ($total == 0) {
             $this->virtualMachineManager->start("worker");
+
+            return;
         }
 
-        //if no data is available do nothing
-        if($queueSize == '0' || $queueSize >= 1) {
-            //if the queue size is larger than 'spinupqueuesize' jobs scale up
-            if ($queueSize > $this->parameters['spinupqueuesize']) {
-                //scale up
-                //number of workers that can spin up at the same time
-                if(($this->virtualMachineManager->getSpinningUpCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) < $this->parameters['spinupcap']) {
-                    $this->virtualMachineManager->start("worker");
-                }
+        // queue size over time
+        $queueSize = $this->queueMeasurement->getQueueSize();
+
+        if (false === $queueSize) {
+            return;
+        }
+
+        // no previous measurement, or queue to small to make a decision
+        if (null === $this->previousQueueSize) {
+            $this->previousQueueSize = $queueSize;
+
+            return;
+        }
+
+        if (0 === $queueSize || 0 === $this->previousQueueSize) {
+            $ratio = -1;
+        } else {
+            $ratio = $queueSize / $this->previousQueueSize;
+        }
+
+
+        if ($ratio >= 1.0 && $queueSize > 20) {
+
+            // spin up only if we're not already spinning a worker up
+            if($totalComing < 1) {
+                $this->virtualMachineManager->start("worker");
+
+                echo "Starting a worker. Ratio: " .  $ratio . ". Queuesize: " . $queueSize . "\n";
             }
-            //if the queue size is less than 'spindownqueuesize' and there are more than 1 workers, spin down a worker
-            elseif ($queueSize < $this->parameters['spindownqueuesize'] && ($this->virtualMachineManager->getSpinningUpCount("worker")+ $this->virtualMachineManager->getRunningCount("worker") + $this->virtualMachineManager->getPreparingCount("worker")) > 1) {
-                //scale down
-                //number of workers that can spin down at the same time
-                if($this->virtualMachineManager->getSpinningDownCount("worker") <= $this->parameters['spindowncap'] && $this->virtualMachineManager->getRunningCount("worker") != 0) {
-                    $this->virtualMachineManager->stop("worker");
-                    sleep(60);
-                }
+
+        } else if ($queueSize <= 5) {
+
+            // spinning down, if we are not already 
+            if($spindownCount == 0 && $runningCount > 1) {
+                $this->virtualMachineManager->stop("worker");
+
+                echo "Stopping a worker. Ratio: " .  $ratio . ". Queuesize: " . $queueSize . "\n";
             }
         }
-        else {
-            //do nothing
-        }
+
+        $this->previousQueueSize = $queueSize;
     }
 }

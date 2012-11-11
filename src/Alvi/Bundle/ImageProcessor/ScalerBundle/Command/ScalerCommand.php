@@ -22,8 +22,8 @@ class ScalerCommand extends ContainerAwareCommand
             ->setName('alvi:image-processor:scaler')
             ->setDescription('Start and stop VM\'s.')
             ->setDefinition(array(
-                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: time, constantsize, queuesize, queuerate", "pwn"),
-                new InputOption('decisionInterval', 'dI', InputOption::VALUE_OPTIONAL, "The interval between policy decisions", 1)
+                new InputOption('scalerpolicy', 'sp', InputOption::VALUE_OPTIONAL, "Scaler policy, options: constantsize, moving-average-queue-size, queuesize, queuerate, time", "queuesize"),
+                new InputOption('decisionInterval', 'dI', InputOption::VALUE_OPTIONAL, "The interval between policy decisions", 10)
                 ))
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command will scale the workers in the cloud.
@@ -44,17 +44,17 @@ EOT
             case 'constantsize':
                 $policy = $container->get('alvi.image_processor.scaler.policy.constantsizepolicy');
             break;
-            case 'queuesize':
-                $policy = $container->get('alvi.image_processor.scaler.policy.QueueSizePolicy');
+            case 'moving-average-queue-size':
+                $policy = $container->get('alvi.image_processor.scaler.policy.MovingAverageQueueSizePolicy');
             break;
             case 'queuerate':
                 $policy = $container->get('alvi.image_processor.scaler.policy.QueueRatePolicy');
             break;
-            case 'pwn':
-                $policy = $container->get('alvi.image_processor.scaler.policy.pwn_policy');
+            case 'queuesize':
+                $policy = $container->get('alvi.image_processor.scaler.policy.queue_size_policy');
             break;
             default:
-                $policy = $container->get('alvi.image_processor.scaler.policy.processfinishtimepolicy');
+                throw new \RuntimeException(sprintf("Unknown policy '%s'.", $input->getOption('scalerpolicy')));
         }
 
         while (true) {

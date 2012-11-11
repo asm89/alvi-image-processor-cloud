@@ -1,9 +1,7 @@
 {
     "name": "alvi/image-processor-cloud",
     "description": "Distributed image processing in the cloud.",
-    "autoload": {
-        "psr-0": { "": "src/" }
-    },
+    "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.2.*",
@@ -11,6 +9,16 @@
         "oldsound/rabbitmq-bundle": "dev-master",
         "beberlei/metrics": "*"
     },
+    "authors": [
+        {
+            "name": "Alexander",
+            "email": "iam.asm89@gmail.com"
+        },
+        {
+            "name": "Vincent",
+            "email": "vincentvanbeek@mac.com"
+        }
+    ],
     "config": {
         "bin-dir": "bin"
     },
@@ -18,5 +26,8 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
+    },
+    "autoload": {
+        "psr-0": { "": "src/" }
     }
 }

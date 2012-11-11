@@ -50,6 +50,12 @@ installed on the host computer.
 
 > All console commands are assumed to be run from the root level of the project.
 
+Start by cloning the repository. After cloning initialize the submodules:
+
+```bash
+$ git submodule update --init
+```
+
 The dependencies of the application can be installing using composer:
 
 ```bash

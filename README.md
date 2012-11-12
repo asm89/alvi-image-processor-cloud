@@ -69,7 +69,7 @@ Running
 Although most of the application is automated, there are a few steps to perform
 in order to run the application.
 
-# 1) Start an initial "master" node.
+### 1) Start an initial "master" node.
 
 Run the following command and get some coffee or watch puppet deploy the master
 node stack.
@@ -79,7 +79,7 @@ $ cd vagrant
 /vagrant $ vagrant up
 ```
 
-# 2) Start a "deployer" process on the host machine
+### 2) Start a "deployer" process on the host machine
 The deployer process will consume command messages to start and stop virtual
 machines.
 
@@ -87,7 +87,7 @@ machines.
 $ app/console rabbitmq:consumer deployer
 ```
 
-# 3) Start a "scaler" policy on the master node
+### 3) Start a "scaler" policy on the master node
 
 ```bash
 $ cd vagrant
@@ -99,7 +99,7 @@ vagrant@master $ /data/app/console alvi:image-processor:scaler --scalerpolicy qu
 Now you have to wait until the worker comes up. You can do this by checking out
 the graphs page (see below) or looking at the VirtualBox gui.
 
-# 4) Finally start a benchmark
+### 4) Finally start a benchmark
 
 ```bash
 $ cd vagrant
@@ -108,17 +108,17 @@ $ cd vagrant
 vagrant@master $ /data/app/console alvi:image-processor:jobSubmit /data/burstWorkload.log
 ```
 
-# 5) Watch some graphs!
+### 5) Watch some graphs!
 
 Open the `graphs.html` file in the `doc` directory in your browser and watch
 the graphs as the system scales up and down.
 
-# Cleaning up
+### Cleaning up
 
 When you are done with playing with the system, open the VirtualBox gui to
 remove all created virtual machines that were not already destroyed.
 
-# Others
+### Others
 
 Checkout the `/data/app/console` command for other possible commands such as
 inspecting the contents of zookeeper.
